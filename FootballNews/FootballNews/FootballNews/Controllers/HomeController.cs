@@ -1,4 +1,5 @@
-﻿using FootballNews.Models;
+﻿using FootballNews.Logics;
+using FootballNews.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,17 +21,14 @@ namespace FootballNews.Controllers
 
         public IActionResult Index()
         {
-            using (var context = new FootballNewsContext())
-            {
-                ViewBag.Top4CategoryShow = context.Categories.
-                    Where(x => x.CategoryId == 1 || x.CategoryId == 2 || x.CategoryId == 3 || x.CategoryId == 8)
-                    .OrderBy(x => x.CategoryId).ToList();
-                ViewBag.CategoryHide = context.Categories.
-                    Where(x => x.CategoryId != 1 && x.CategoryId != 2 && x.CategoryId != 3 && x.CategoryId != 8)
-                    .OrderBy(x => x.CategoryId).ToList();
-                ViewBag.Top5LastestNews = context.News.Where(x => x.CategoryId != 8).Take(5).OrderByDescending(x => x.DatePublished).ToList();
-                ViewBag.Top5TransferNews = context.News.Where(x => x.CategoryId == 8).Take(5).OrderByDescending(x => x.DatePublished).ToList();
-            }
+
+            CategoryManager categoryManager = new CategoryManager();
+            ViewBag.Top4Categories = categoryManager.GetTop4Categories();
+            ViewBag.AllOtherCategories =categoryManager.GetAllOtherCategories();
+
+            NewsManager newsManager = new NewsManager();
+            ViewBag.Top5LatestNews = newsManager.GetTop5LatestNews();
+            ViewBag.Top5LatestTransferNews = newsManager.GetTop5LatestTransferNews();
             return View();
         }
 

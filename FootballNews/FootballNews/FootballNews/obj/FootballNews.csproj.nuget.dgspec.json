@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj": {}
+    "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj": {}
   },
   "projects": {
-    "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj": {
+    "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj",
+        "projectUniqueName": "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj",
         "projectName": "FootballNews",
-        "projectPath": "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj",
+        "projectPath": "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "D:\\FootballNews\\FootballNews\\FootballNews\\obj\\",
+        "outputPath": "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",

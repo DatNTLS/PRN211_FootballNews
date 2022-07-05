@@ -49,7 +49,7 @@ namespace FootballNews
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{CategoryId=0}/{Page=1}");
             });
         }
     }

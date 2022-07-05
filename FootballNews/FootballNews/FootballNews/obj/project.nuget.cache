@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qIHwL9pf5ID08764l20mASYN1QdV5Nozprc5EDjoE1InDAiMdPBZ469gkvCs9lbVS1Q1p952+JePz7orc9NKfg==",
+  "dgSpecHash": "S1hs/splRkTvHjZR9asNeJmd2zJvx3Eh8h/6Kyur0SNz/HTexGfuDaC3yIa43GqYl9AHDty+AOzMvN/pmSfXdw==",
   "success": true,
-  "projectFilePath": "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj",
+  "projectFilePath": "D:\\FootballNews\\FootballNews\\FootballNews\\FootballNews\\FootballNews.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

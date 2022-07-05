@@ -21,10 +21,10 @@
      background-image:url('../images/main-slider-img1.jpg');
 }
  .darkerskyblue {
-     background-image:url('../images/bg1.png');
+     background-image:url('../images/main-slider-img1.jpg');
 }
  .deepskyblue {
-     background-image:url('../images/bg1.png');
+     background-image:url('../images/img-03_002.jpg');
 }
  .carousel-indicators {
      bottom: 0;
@@ -957,7 +957,7 @@
      float: left;
      width: 100%;
      min-height: 500px;
-     background-image: url('../images/about.png');
+     background-image: url('../images/img-03_003.jpg');
      background-position: center center;
      background-repeat: no-repeat;
      background-size: cover;

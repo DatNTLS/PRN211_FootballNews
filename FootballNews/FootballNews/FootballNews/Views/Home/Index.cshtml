@@ -57,7 +57,7 @@
                   <div class="col-md-6">
                      <div class="full">
                         <div class="logo">
-                           <a href="index.html"><img src="images/logo.png" alt="#" /></a>
+                           <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
                         </div>
                      </div>
                   </div>
@@ -122,9 +122,9 @@
                                  <div class="collapse navbar-collapse js-navbar-collapse">
                                     <ul class="nav navbar-nav">
                                        <li class="active"><a href="">Trang Chủ</a></li>
-                                       @foreach (Category c in ViewBag.Top4CategoryShow)
+                                       @foreach (Category c in ViewBag.Top4Categories)
                                        {
-                                           <li><a href="">@c.CategoryName</a></li>
+                                           <li><a href="/News/NewsList/@c.CategoryId">@c.CategoryName</a></li>
                                        }
                                        <li class="dropdown">
                                           <a href="" class="dropdown-toggle" data-toggle="dropdown">Xem Thêm<span
@@ -132,9 +132,9 @@
                                           <ul class="dropdown-menu dropdown-item" style="width: 200px;height: auto;">
                                              <li class="col-sm-12">
                                                 <ul class="menu-inner">
-                                                    @foreach (Category c in ViewBag.CategoryHide)
+                                                    @foreach (Category c in ViewBag.AllOtherCategories)
                                        {
-                                                   <li><a href="#">@c.CategoryName</a></li>
+                                                   <li><a href="/News/NewsList/@c.CategoryId">@c.CategoryName</a></li>
                                                    }
                                                 </ul>
                                              </li>
@@ -256,7 +256,7 @@
          <div class="row">
             <div class="col-lg-8 col-sm-8 col-xs-12">
                 <h1>Tin Mới Nhất</h1>
-                @foreach (News n in ViewBag.Top5LastestNews)
+                @foreach (News n in ViewBag.Top5LatestNews)
                {
                    <div class="news-post-holder">
                   <div class="news-post-widget">
@@ -273,7 +273,7 @@
             </div>
             <div class="col-lg-4 col-sm-4 col-xs-12">
                 <h1>Tin Chuyển Nhượng</h1>
-                 @foreach (News n in ViewBag.Top5TransferNews)
+                 @foreach (News n in ViewBag.Top5LatestTransferNews)
                {
                <div class="news-post-holder">
                   <div class="news-post-widget">
