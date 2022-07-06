@@ -277,5 +277,8 @@ namespace FootballNews.Controllers
             }
             return View();
         }
+
+        
+
     }
 }

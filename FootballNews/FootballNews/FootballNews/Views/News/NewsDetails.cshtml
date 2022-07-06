@@ -73,6 +73,9 @@
                                 </ul>
                                 <!-- end social icon -->
                                 <!-- button section -->
+                                @{
+                                    User CurrentUser = null;
+                                }
                                 @if (Context.Session.GetString("CurrentUser") == null)
                                 {
                                     <ul class="login">
@@ -88,7 +91,7 @@
                                 }
                                 else
                                 {
-                                    User CurrentUser = JsonConvert.DeserializeObject<User>(Context.Session.GetString("CurrentUser"));
+                                    CurrentUser = JsonConvert.DeserializeObject<User>(Context.Session.GetString("CurrentUser"));
                                     <ul class="nav navbar-nav">
                                         <li class="dropdown">
                                             <a href="" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
@@ -274,16 +277,14 @@
                                         </div>
                                     }
                                 </div>
-
                             }
-
 
                         </div>
                         <div class="commant-section">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <h3>Leave a comment</h3>
                                 <div class="form-command row">
-                                    <form action="comment" method="post" id="comments_form" class="form-horizontal1">
+                                    <form action="addComment" method="post" id="comments_form" class="form-horizontal1">
                                         <div class="comment-box-field">
                                             <div class=" col-sm-12 col-xs-12">
                                                 <div class="comment-box-full"><textarea id="comments" class="form-control4" placeholder="Comments" name="Comment" cols="45" rows="3" aria-required="true"></textarea></div>
@@ -293,8 +294,11 @@
                                                     <input id="submit" value="Submit " type="submit">
                                                 </div>
                                             </div>
-                                            <input name="comment_post_ID" value="348" id="comment_post_ID" type="hidden">
-                                            <input name="comment_parent" id="comment_parent" value="0" type="hidden">
+                                            <input name="NewsId" value="@ViewData["NewsId"]" id="comment_post_ID" type="hidden">
+                                            @if (Context.Session.GetString("CurrentUser") != null)
+                                            {
+                                                <input name="UserId" id="comment_parent" value="@CurrentUser.UserId" type="hidden">
+                                            }
                                         </div>
                                     </form>
                                 </div>

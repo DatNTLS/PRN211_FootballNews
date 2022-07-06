@@ -2,6 +2,7 @@
 using FootballNews.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace FootballNews.Controllers
@@ -60,6 +61,7 @@ namespace FootballNews.Controllers
             ViewBag.Top5LatestNews = newsManager.GetTop5LatestNews();
 
             News n = newsManager.GetNewsById(NewsId);
+            ViewData["NewsId"] = n.NewsId;
             ViewData["Title"] = n.Title;
             ViewData["ShortDescription"] = n.ShortDescription;
             ViewData["Thumbnail"] = n.Thumbnail;
@@ -99,6 +101,25 @@ namespace FootballNews.Controllers
             return View("Views/News/NewsList.cshtml");
         }
 
-        
+        //Comment Action
+        [HttpPost]
+        public IActionResult AddComment(int NewsId, int UserId, string Comment)
+        {
+            CommentManager commentManager = new CommentManager();
+            if (ModelState.IsValid)
+            {
+                if (HttpContext.Session.GetString("CurrentUser") == null)
+                {
+                    return RedirectToAction("Login", "User", new { Area = "" });
+                }
+                else
+                {
+                    commentManager.AddComment(NewsId, UserId, Comment);
+                    return RedirectToAction("NewsDetails", "News", new {NewsId = NewsId});
+                }
+            }
+            return View();
+        }
+
     }
 }
