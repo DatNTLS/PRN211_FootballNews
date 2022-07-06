@@ -89,5 +89,13 @@ namespace FootballNews.Logics
                 context.SaveChanges();
             }
         }
+
+        public dynamic GetAllUsers()
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Users.ToList();
+            }
+        }
     }
 }

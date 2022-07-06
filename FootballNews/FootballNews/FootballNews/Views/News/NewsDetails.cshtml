@@ -182,7 +182,7 @@
             <div class="container">
                 <h3>Tin Tức</h3>
                 <ul class="breadcrumb">
-                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="/Home/Index">Trang Chủ</a></li>
                     <li class="active">Tin Tức</li>
                 </ul>
             </div>
@@ -227,33 +227,66 @@
                             </div>
                         </div>
                         <div class="commant-section">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h3>COMMENTS: (5)</h3>
-                                <div class="commant-text row">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-hidden">
-                                        <div class="profile">
-                                            <img class="img-responsive" src="images/client.png" alt="#">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-hidden">
-                                        <h5>David</h5>
-                                        <p><span class="c_date">May 31, 2018</span> | <span><a rel="nofollow" class="comment-reply-link" href="#">Reply</a></span></p>
-                                        <p class="msg">
-                                            ThisThis book is a treatise on the theory of ethics, very popular during the Renaissance.
-                                            The first line of Lorem Ipsum, “Lorem ipsum dolor sit amet..
-                                        </p>
-                                    </div>
+                            @if (ViewBag.AllComments == null)
+                            {
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h3>COMMENTS: (0)</h3>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h3>COMMENTS: (@ViewData["NumberOfComment"])</h3>
+                                    @foreach (Comment c in ViewBag.AllComments)
+                                    {
+                                        <div class="commant-text row">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-hidden">
+                                                <div class="profile">
+                                                    @foreach (User u in ViewBag.AllUsers)
+                                                    {
+                                                        if (u.UserId == c.UserId)
+                                                        {
+                                                            if (u.Avatar.Equals(""))
+                                                            {
+                                                                <img class="img-responsive" src="~/images/avatar/2120b058cb9946e36306778243eadae5.jpg" alt="#">
+                                                            }
+                                                            else
+                                                            {
+                                                                <img class="img-responsive" src="~/images/avatar/@u.Avatar" alt="#">
+                                                            }
+
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-hidden">
+                                                @foreach (User u in ViewBag.AllUsers)
+                                                {
+                                                    if (u.UserId == c.UserId)
+                                                    {
+                                                        <h5>@u.UserName</h5>
+                                                    }
+                                                }
+                                                <p class="msg">
+                                                    @c.Content
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                            }
+
+
                         </div>
                         <div class="commant-section">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <h3>Leave a comment</h3>
                                 <div class="form-command row">
-                                    <form action="#" method="post" id="comments_form" class="form-horizontal1">
+                                    <form action="comment" method="post" id="comments_form" class="form-horizontal1">
                                         <div class="comment-box-field">
                                             <div class=" col-sm-12 col-xs-12">
-                                                <div class="comment-box-full"><textarea id="comments" class="form-control4" placeholder="Comments" name="comment" cols="45" rows="3" aria-required="true"></textarea></div>
+                                                <div class="comment-box-full"><textarea id="comments" class="form-control4" placeholder="Comments" name="Comment" cols="45" rows="3" aria-required="true"></textarea></div>
                                             </div>
                                             <div class="col-lg-12">
                                                 <div class="comment-box-submit">

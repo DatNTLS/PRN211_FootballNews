@@ -18,13 +18,13 @@
      padding: 10px 15px;
 }
  .skyblue {
-     background-image:url('~/images/main-slider-img1.jpg');
+     background-image:url('../images/main-slider-img1.jpg');
 }
- .darkerskyblue {
-     background-image:url('~/images/main-slider-img1.jpg');
+.darkerskyblue {
+    background-image: url('../images/main-slider-img1.jpg');
 }
- .deepskyblue {
-     background-image:url('~/images/img-03_002.jpg');
+.deepskyblue {
+    background-image: url('../images/img-03_002.jpg');
 }
  .carousel-indicators {
      bottom: 0;
@@ -957,7 +957,7 @@
     float: left;
     width: 100%;
     min-height: 500px;
-    background-image: url('~/images/img-03_003.jpg');
+    background-image: url('../images/img-03_003.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1177,7 +1177,7 @@ section#contant h4 {
 .theme-padding.middle-bg {
     padding-top: 100px;
     padding-bottom: 100px;
-    background-image: url(~/images/img-03_003.jpg);
+    background-image: url('../images/img-03_003.jpg');
     background-repeat: no-repeat;
     background-position: top center;
     position: relative;
@@ -2016,16 +2016,16 @@ body section#contant .post-info span h4 {
      .right-match-time ul li {
          font-size: 17px;
     }
-     .theme-padding.middle-bg {
-         padding-top: 60px;
-         padding-bottom: 60px;
-         background-image: url(~/images/img-03_003.jpg);
-         background-repeat: no-repeat;
-         background-position: top center;
-         position: relative;
-         background-size: cover;
-         background-attachment: fixed;
-         box-shadow: 0 0 100px -80px rgba(0,0,0,0.8);
-         min-height: auto;
+    .theme-padding.middle-bg {
+        padding-top: 60px;
+        padding-bottom: 60px;
+        background-image: url('../images/img-03_003.jpg');
+        background-repeat: no-repeat;
+        background-position: top center;
+        position: relative;
+        background-size: cover;
+        background-attachment: fixed;
+        box-shadow: 0 0 100px -80px rgba(0,0,0,0.8);
+        min-height: auto;
     }
 }

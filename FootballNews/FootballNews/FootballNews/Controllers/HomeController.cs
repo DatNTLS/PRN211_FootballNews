@@ -12,12 +12,12 @@ namespace FootballNews.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
 
         public IActionResult Index()
         {
@@ -32,15 +32,43 @@ namespace FootballNews.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
-            return View();
+            CategoryManager categoryManager = new CategoryManager();
+            ViewBag.Top4Categories = categoryManager.GetTop4Categories();
+            ViewBag.AllOtherCategories = categoryManager.GetAllOtherCategories();
+
+            NewsManager newsManager = new NewsManager();
+            ViewBag.Top5LatestNews = newsManager.GetTop5LatestNews();
+            ViewBag.Top5LatestTransferNews = newsManager.GetTop5LatestTransferNews();
+
+            return View("Views/Home/About.cshtml");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        //Contact Screen
+        [HttpGet]
+        public IActionResult Contact()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            CategoryManager categoryManager = new CategoryManager();
+            ViewBag.Top4Categories = categoryManager.GetTop4Categories();
+            ViewBag.AllOtherCategories = categoryManager.GetAllOtherCategories();
+
+            NewsManager newsManager = new NewsManager();
+            ViewBag.Top5LatestNews = newsManager.GetTop5LatestNews();
+            ViewBag.Top5LatestTransferNews = newsManager.GetTop5LatestTransferNews();
+
+            return View("Views/Home/Contact.cshtml");
         }
+
+        //public IActionResult Privacy()
+        //{
+        //    return View();
+        //}
+
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }

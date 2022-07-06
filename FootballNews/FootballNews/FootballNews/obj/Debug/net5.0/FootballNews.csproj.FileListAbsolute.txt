@@ -185,5 +185,5 @@ D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Vi
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\User\Register.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\User\UserProfile.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\User\Verify.cshtml.g.cs
-D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\About.cshtml.g.cs
-D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Contact.cshtml.g.cs
+D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Home\About.cshtml.g.cs
+D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Home\Contact.cshtml.g.cs

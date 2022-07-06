@@ -83,6 +83,12 @@ namespace FootballNews.Controllers
             ContentManager contentManager = new ContentManager();
             ViewBag.AllContents = contentManager.GetAllContents();
 
+            CommentManager commentManager = new CommentManager();
+            ViewBag.AllComments = commentManager.GetAllComments(n.NewsId);
+            ViewData["NumberOfComment"] = commentManager.GetAllComments(n.NewsId).Count;
+
+            ViewBag.AllUsers = userManager.GetAllUsers();
+
             return View("Views/News/NewsDetails.cshtml");
         }
 
@@ -92,5 +98,7 @@ namespace FootballNews.Controllers
 
             return View("Views/News/NewsList.cshtml");
         }
+
+        
     }
 }
