@@ -160,7 +160,6 @@ D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Football
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\FootballNews.RazorCoreGenerate.cache
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Admin\ManageNews.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Admin\ManageUser.cshtml.g.cs
-D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Home\About.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
@@ -186,3 +185,5 @@ D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Vi
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\User\Register.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\User\UserProfile.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\User\Verify.cshtml.g.cs
+D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\About.cshtml.g.cs
+D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Contact.cshtml.g.cs

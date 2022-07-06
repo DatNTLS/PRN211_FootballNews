@@ -1,6 +1,5 @@
-﻿@{
-    Layout = "_EmptyLayout";
-}
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +39,8 @@
 
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <script src="~/js/3dslider.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="game_info" data-spy="scroll" data-target=".header">
@@ -56,7 +57,7 @@
                         <div class="col-md-6">
                             <div class="full">
                                 <div class="logo">
-                                    <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
+                                    <a href="/Home/Index"><img src="~/images/logo.png" alt="#" /></a>
                                 </div>
                             </div>
                         </div>
@@ -71,32 +72,39 @@
                                 </ul>
                                 <!-- end social icon -->
                                 <!-- button section -->
-                                <!-- <ul class="login">
-                                   <li class="login-modal">
-                                      <a href="#" class="login"><i class="fa fa-user"></i>Đăng Nhập</a>
-                                   </li>
-                                   <li>
-                                      <div class="cart-option">
-                                         <a href="#"><i class="fa fa-registered"></i>Đăng Kí</a>
-                                      </div>
-                                   </li>
-                                </ul> -->
-                                <ul class="nav navbar-nav">
-                                    <li class="dropdown">
-                                        <a href="" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
-                                            Xin Chào ! Dat<span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-item" style="height: auto;">
-                                            <li class="col-sm-12">
-                                                <ul class="menu-inner">
-                                                    <li><a href="#">Hồ Sơ</a></li>
-                                                    <li><a href="#">Đổi Mật Khẩu</a></li>
-                                                    <li><a href="#">Đăng Xuất</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                @if (Context.Session.GetString("CurrentUser") == null)
+                                {
+                                    <ul class="login">
+                                        <li class="login-modal">
+                                            <a href="/User/Login" class="login"><i class="fa fa-user"></i>Đăng Nhập</a>
+                                        </li>
+                                        <li>
+                                            <div class="cart-option">
+                                                <a href="/User/Register"><i class="fa fa-registered"></i>Đăng Kí</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    User CurrentUser = JsonConvert.DeserializeObject<User>(Context.Session.GetString("CurrentUser"));
+                                    <ul class="nav navbar-nav">
+                                        <li class="dropdown">
+                                            <a href="" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
+                                                Xin Chào ! @CurrentUser.UserName <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-item" style="height: auto;">
+                                                <li class="col-sm-12">
+                                                    <ul class="menu-inner">
+                                                        <li><a href="#">Hồ Sơ</a></li>
+                                                        <li><a href="#">Đổi Mật Khẩu</a></li>
+                                                        <li><a href="/User/Logout">Đăng Xuất</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                }
                                 <!-- end button section -->
                             </div>
                         </div>
@@ -121,7 +129,7 @@
                                             </div>
                                             <div class="collapse navbar-collapse js-navbar-collapse">
                                                 <ul class="nav navbar-nav">
-                                                    <li class="active"><a href="">Trang Chủ</a></li>
+                                                    <li class="active"><a href="/Home/Index">Trang Chủ</a></li>
                                                     @foreach (Category c in ViewBag.Top4Categories)
                                                     {
                                                         <li><a href="/News/NewsList/@c.CategoryId">@c.CategoryName</a></li>
@@ -145,16 +153,18 @@
                                             </div>
                                             <!-- /.nav-collapse -->
                                         </nav>
-                                        <div class="search-bar">
-                                            <div id="imaginary_container">
-                                                <div class="input-group stylish-input-group">
-                                                    <input type="text" class="form-control" placeholder="Search">
-                                                    <span class="input-group-addon">
-                                                        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                                    </span>
+                                        <form action="searchNews" method="post">
+                                            <div class="search-bar">
+                                                <div id="imaginary_container">
+                                                    <div class="input-group stylish-input-group">
+                                                        <input type="text" class="form-control" name="NewsValue" placeholder="Search">
+                                                        <span class="input-group-addon">
+                                                            <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -169,10 +179,10 @@
         </div>
         <div class="inner-information-text">
             <div class="container">
-                <h3>Tin Tức</h3>
+                <h3>@ViewData["CurrentCategory"]</h3>
                 <ul class="breadcrumb">
                     <li><a href="index.html">Trang Chủ</a></li>
-                    <li class="active">Tin Tức</li>
+                    <li class="active">@ViewData["CurrentCategory"]</li>
                 </ul>
             </div>
         </div>
@@ -181,7 +191,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-sm-12 col-xs-12">
-                    <h1>Tin Bóng Đá</h1>
+                    <h1>@ViewData["CurrentCategory"]</h1>
                     @foreach (News n in ViewBag.AllNewsByCategory)
                     {
                         <div class="news-post-holder">
@@ -236,7 +246,7 @@
                 </div>
                 <div class="col-lg-3 col-sm-6 col-xs-12">
                     <h1>Tin Mới Nhất</h1>
-                    @foreach (News n in ViewBag.Top5LatestTransferNews)
+                    @foreach (News n in ViewBag.Top5LatestNews)
                     {
                         <div class="news-post-holder">
                             <div class="news-post-widget">
@@ -264,7 +274,7 @@
                     <div class="full">
                         <div class="footer-widget">
                             <div class="footer-logo">
-                                <a href="#"><img src="~/images/footer-logo.png" alt="#" /></a>
+                                <a href="/Home/Index"><img src="~/images/footer-logo.png" alt="#" /></a>
                             </div>
                             <p>
                                 Most of our events have hard and easy route choices as we are always keen to encourage new
@@ -284,9 +294,9 @@
                         <div class="footer-widget">
                             <h3>Menu</h3>
                             <ul class="footer-menu">
-                                <li><a href="">Trang Chủ</a></li>
-                                <li><a href="">Giới Thiệu</a></li>
-                                <li><a href="">Liên Lạc</a></li>
+                                <li><a href="/Home/Index">Trang Chủ</a></li>
+                                <li><a href="/Home/About">Giới Thiệu</a></li>
+                                <li><a href="/Home/Contact">Liên Lạc</a></li>
                             </ul>
                         </div>
                     </div>

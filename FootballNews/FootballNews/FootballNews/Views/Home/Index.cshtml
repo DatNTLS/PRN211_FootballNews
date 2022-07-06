@@ -1,8 +1,4 @@
-﻿@{
-    Layout = "_EmptyLayout";
-}
-
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json;
 
 <!DOCTYPE html>
@@ -44,6 +40,8 @@
 
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <script src="~/js/3dslider.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="game_info" data-spy="scroll" data-target=".header">
@@ -60,7 +58,7 @@
                   <div class="col-md-6">
                      <div class="full">
                         <div class="logo">
-                           <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
+                           <a href="/Home/Index"><img src="~/images/logo.png" alt="#" /></a>
                         </div>
                      </div>
                   </div>
@@ -154,16 +152,18 @@
                                  </div>
                                  <!-- /.nav-collapse -->
                               </nav>
-                              <div class="search-bar">
-                                 <div id="imaginary_container">
-                                    <div class="input-group stylish-input-group">
-                                       <input type="text" class="form-control" placeholder="Search">
-                                       <span class="input-group-addon">
-                                          <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                       </span>
+                              <form action="searchNews" method="post">
+                                  <div class="search-bar">
+                                    <div id="imaginary_container">
+                                        <div class="input-group stylish-input-group">
+                                           <input type="text" class="form-control" name="NewsValue" placeholder="Search">
+                                           <span class="input-group-addon">
+                                              <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                           </span>
+                                        </div>
                                     </div>
-                                 </div>
-                              </div>
+                                  </div>
+                              </form>
                            </div>
                         </div>
                      </div>
@@ -273,7 +273,7 @@
                      <img class="img-responsive" src="~/images/news/@n.Thumbnail" alt="">
                      <div class="news-post-detail">
                         <span class="date">@n.DatePublished</span>
-                        <h2><a href="blog-detail.html">@n.Title</a>
+                        <h2><a href="/News/NewsDetails?NewsId=@n.NewsId">@n.Title</a>
                         </h2>
                         <p>@n.ShortDescription</p>
                      </div>
@@ -290,7 +290,7 @@
                      <img class="img-responsive" src="~/images/news/@n.Thumbnail" alt="">
                      <div class="news-post-detail">
                         <span class="date">@n.DatePublished</span>
-                        <h2><a href="blog-detail.html">@n.Title</a>
+                        <h2><a href="/News/NewsDetails?NewsId=@n.NewsId">@n.Title</a>
                         </h2>
                         <p>@n.ShortDescription</p>
                      </div>
@@ -309,7 +309,7 @@
                <div class="full">
                   <div class="footer-widget">
                      <div class="footer-logo">
-                        <a href="#"><img src="images/footer-logo.png" alt="#" /></a>
+                        <a href="/Home/Index"><img src="~/images/footer-logo.png" alt="#" /></a>
                      </div>
                      <p>Most of our events have hard and easy route choices as we are always keen to encourage new
                         riders.</p>
@@ -327,9 +327,9 @@
                   <div class="footer-widget">
                      <h3>Menu</h3>
                      <ul class="footer-menu">
-                        <li><a href="">Trang Chủ</a></li>
-                        <li><a href="">Giới Thiệu</a></li>
-                        <li><a href="">Liên Lạc</a></li>
+                        <li><a href="/Home/Index">Trang Chủ</a></li>
+                        <li><a href="/Home/About">Giới Thiệu</a></li>
+                        <li><a href="/Home/Contact">Liên Lạc</a></li>
                      </ul>
                   </div>
                </div>

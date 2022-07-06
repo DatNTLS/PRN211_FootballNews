@@ -98,13 +98,21 @@
                     color: black;
                 }
 
+            .form-register .imgcontainer {
+                text-align: center;
+                margin: 24px 0 12px 0;
+            }
     </style>
 </head>
 <body>
     <div class="form-register">
         <form action="register" method="post">
+
             <div class="container">
                 <h1>Register</h1>
+                <div class="imgcontainer">
+                    <img src="~/images/logo.png" alt="" class="logo" width="200px" height="100px">
+                </div>
                 <hr>
                 @if (ViewBag.Error1 != null)
                 {

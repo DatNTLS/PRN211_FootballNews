@@ -1,4 +1,5 @@
 ﻿using FootballNews.Models;
+using System;
 using System.Linq;
 
 namespace FootballNews.Logics
@@ -38,6 +39,53 @@ namespace FootballNews.Logics
                     ,  RoleId = 3, Otp = Otp, Status = false
                 };
                 context.Add(user);
+                context.SaveChanges();
+            }
+        }
+
+        public User GetUserByAuthorId(int AuthorId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Users.Where(x => x.UserId == AuthorId).FirstOrDefault();
+            }
+        }
+
+        public User CheckOTP(string Email,string Otp)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Users.Where(x => x.Email == Email && x.Otp == Otp).FirstOrDefault();
+            }
+        }
+
+        public void UpdateStatus(string Email, bool Status)
+        {
+
+            using (var context = new FootballNewsContext())
+            {
+                User CurrentUser = context.Users.Where(x => x.Email == Email).FirstOrDefault();
+                CurrentUser.Status = Status;
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateOtp(string Email, string Otp)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                User CurrentUser = context.Users.Where(x => x.Email == Email).FirstOrDefault();
+                CurrentUser.Otp = Otp;
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdatePassword(string Email, string Password)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                User CurrentUser = context.Users.Where(x => x.Email == Email).FirstOrDefault();
+                CurrentUser.Password = Password;
                 context.SaveChanges();
             }
         }

@@ -24,7 +24,7 @@ namespace FootballNews.Controllers
 
             CategoryManager categoryManager = new CategoryManager();
             ViewBag.Top4Categories = categoryManager.GetTop4Categories();
-            ViewBag.AllOtherCategories =categoryManager.GetAllOtherCategories();
+            ViewBag.AllOtherCategories = categoryManager.GetAllOtherCategories();
 
             NewsManager newsManager = new NewsManager();
             ViewBag.Top5LatestNews = newsManager.GetTop5LatestNews();

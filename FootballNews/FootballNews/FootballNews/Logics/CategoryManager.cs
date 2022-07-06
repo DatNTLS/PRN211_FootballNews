@@ -27,5 +27,13 @@ namespace FootballNews.Logics
             }
         }
 
+        public Category GetCategoryById(int CategoryId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Categories.Where(x => x.CategoryId == CategoryId).FirstOrDefault();
+            }
+        }
+
     }
 }

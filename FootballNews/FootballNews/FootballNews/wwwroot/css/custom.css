@@ -18,13 +18,13 @@
      padding: 10px 15px;
 }
  .skyblue {
-     background-image:url('../images/main-slider-img1.jpg');
+     background-image:url('~/images/main-slider-img1.jpg');
 }
  .darkerskyblue {
-     background-image:url('../images/main-slider-img1.jpg');
+     background-image:url('~/images/main-slider-img1.jpg');
 }
  .deepskyblue {
-     background-image:url('../images/img-03_002.jpg');
+     background-image:url('~/images/img-03_002.jpg');
 }
  .carousel-indicators {
      bottom: 0;
@@ -533,7 +533,7 @@
  .about-us {
      float: left;
      width: 100%;
-     background: url('../images/banner1.png');
+     background: url('~/images/banner1.png');
      min-height: 220px;
      background-position: center center;
      background-size: cover;
@@ -552,7 +552,7 @@
  .right-match-time {
      text-align: center;
      padding: 63px 0 62px;
-     background: url('../images/match-start-img.png');
+     background: url('~/images/match-start-img.png');
      background-size: cover;
      color: #fff;
      background-repeat: no-repeat;
@@ -953,15 +953,15 @@
      line-height: 50px;
      font-weight: 300;
 }
- .inner-page-banner {
-     float: left;
-     width: 100%;
-     min-height: 500px;
-     background-image: url('~/images/img-03_003.jpg');
-     background-position: center center;
-     background-repeat: no-repeat;
-     background-size: cover;
-     position: relative;
+.inner-page-banner {
+    float: left;
+    width: 100%;
+    min-height: 500px;
+    background-image: url('~/images/img-03_003.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
 }
  .inner-information {
      float: left;
@@ -1174,17 +1174,17 @@ section#contant h4 {
  .main-heading.sytle-2 h2::after {
      left: 100%;
 }
- .theme-padding.middle-bg {
-     padding-top: 100px;
-     padding-bottom: 100px;
-     background-image: url(../images/sport-mate.png);
-     background-repeat: no-repeat;
-     background-position: top center;
-     position: relative;
-     background-size: cover;
-     background-attachment: fixed;
-     box-shadow: 0 0 100px -80px rgba(0,0,0,0.8);
-     min-height: 515px;
+.theme-padding.middle-bg {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-image: url(~/images/img-03_003.jpg);
+    background-repeat: no-repeat;
+    background-position: top center;
+    position: relative;
+    background-size: cover;
+    background-attachment: fixed;
+    box-shadow: 0 0 100px -80px rgba(0,0,0,0.8);
+    min-height: 515px;
 }
  .video-item img {
      border: solid #fff 5px;
@@ -2019,7 +2019,7 @@ body section#contant .post-info span h4 {
      .theme-padding.middle-bg {
          padding-top: 60px;
          padding-bottom: 60px;
-         background-image: url(../images/sport-mate.png);
+         background-image: url(~/images/img-03_003.jpg);
          background-repeat: no-repeat;
          background-position: top center;
          position: relative;

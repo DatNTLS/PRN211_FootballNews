@@ -1,9 +1,5 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@using FootballNews.Models
-@model News
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json;
 
 
 <!DOCTYPE html>
@@ -44,6 +40,8 @@
 
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <script src="~/js/3dslider.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="game_info" data-spy="scroll" data-target=".header">
@@ -60,7 +58,7 @@
                         <div class="col-md-6">
                             <div class="full">
                                 <div class="logo">
-                                    <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
+                                    <a href="/Home/Index"><img src="~/images/logo.png" alt="#" /></a>
                                 </div>
                             </div>
                         </div>
@@ -75,32 +73,39 @@
                                 </ul>
                                 <!-- end social icon -->
                                 <!-- button section -->
-                                <!-- <ul class="login">
-                                   <li class="login-modal">
-                                      <a href="#" class="login"><i class="fa fa-user"></i>Đăng Nhập</a>
-                                   </li>
-                                   <li>
-                                      <div class="cart-option">
-                                         <a href="#"><i class="fa fa-registered"></i>Đăng Kí</a>
-                                      </div>
-                                   </li>
-                                </ul> -->
-                                <ul class="nav navbar-nav">
-                                    <li class="dropdown">
-                                        <a href="" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
-                                            Xin Chào ! Dat<span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-item" style="height: auto;">
-                                            <li class="col-sm-12">
-                                                <ul class="menu-inner">
-                                                    <li><a href="#">Hồ Sơ</a></li>
-                                                    <li><a href="#">Đổi Mật Khẩu</a></li>
-                                                    <li><a href="#">Đăng Xuất</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                @if (Context.Session.GetString("CurrentUser") == null)
+                                {
+                                    <ul class="login">
+                                        <li class="login-modal">
+                                            <a href="/User/Login" class="login"><i class="fa fa-user"></i>Đăng Nhập</a>
+                                        </li>
+                                        <li>
+                                            <div class="cart-option">
+                                                <a href="/User/Register"><i class="fa fa-registered"></i>Đăng Kí</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    User CurrentUser = JsonConvert.DeserializeObject<User>(Context.Session.GetString("CurrentUser"));
+                                    <ul class="nav navbar-nav">
+                                        <li class="dropdown">
+                                            <a href="" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
+                                                Xin Chào ! @CurrentUser.UserName <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-item" style="height: auto;">
+                                                <li class="col-sm-12">
+                                                    <ul class="menu-inner">
+                                                        <li><a href="#">Hồ Sơ</a></li>
+                                                        <li><a href="#">Đổi Mật Khẩu</a></li>
+                                                        <li><a href="/User/Logout">Đăng Xuất</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                }
                                 <!-- end button section -->
                             </div>
                         </div>
@@ -149,16 +154,18 @@
                                             </div>
                                             <!-- /.nav-collapse -->
                                         </nav>
-                                        <div class="search-bar">
-                                            <div id="imaginary_container">
-                                                <div class="input-group stylish-input-group">
-                                                    <input type="text" class="form-control" placeholder="Search">
-                                                    <span class="input-group-addon">
-                                                        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                                    </span>
+                                        <form action="searchNews" method="post">
+                                            <div class="search-bar">
+                                                <div id="imaginary_container">
+                                                    <div class="input-group stylish-input-group">
+                                                        <input type="text" class="form-control" name="NewsValue" placeholder="Search">
+                                                        <span class="input-group-addon">
+                                                            <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -187,36 +194,36 @@
             <div class="container">
                 <div class="col-md-9">
                     <div class="feature-post">
-                        <h1 style="color: #d8302f;">@Model.Title</h1>
-                        <h3 style="margin: 20px 0;">@Model.ShortDescription</h3>
+                        <h1 style="color: #d8302f;">@ViewData["Title"]</h1>
+                        <h3 style="margin: 20px 0;">@ViewData["ShortDescription"]</h3>
                         <div class="feature-img">
-                            <img src="~/images/" class="img-responsive" alt="#" />
+                            <img src="~/images/news/@ViewData["Thumbnail"]" class="img-responsive" alt="#" width="100%" />
                         </div>
                         <div class="feature-cont">
                             <div class="post-people">
                                 <div class="left-profile">
                                     <div class="post-info">
-                                        <img src="images/profile-img.png" alt="#" />
+                                        <img src="~/images/avatar/@ViewData["Avatar"]" alt="#" />
                                         <span>
-                                            <h4></h4>
-                                            <h5></h5>
+                                            <h4>@ViewData["AuthorName"]</h4>
+                                            <h5>@ViewData["DatePublished"]</h5>
                                         </span>
                                     </div>
                                     <span class="share"></span>
                                 </div>
                             </div>
                             <div class="post-heading">
-                                <img src="images/img-03_002.jpg" class="img-responsive" alt="#" />
-                                <p style="margin: 20px 0;">
-                                    World CupInternational Club football teamSpanish LeagueReal Madrid Vs Barcelona SpanishNext MatchThe Match Result
-                                    UpdateWorld CUPFIFA World CUP 2015International Club football teamEngland30 Jun 10:24FranceReal Madrid Vs Barcelona SpanishManchester
-                                    City30 Nov 00:00Manchester.
-                                </p>
-                                <img src="images/img-03_002.jpg" class="img-responsive" alt="#" />
-                                <p style="margin: 20px 0;">
-                                    Architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-                                    aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-                                </p>
+                                @foreach (Image i in ViewBag.AllImages)
+                                {
+                                    <img src="~/images/news/@i.ImageUrl" class="img-responsive" alt="#" width="100%" />
+                                    @foreach (Content c in ViewBag.AllContents)
+                                    {
+                                        if (c.ImageId == i.ImageId)
+                                        {
+                                            <p style="margin: 20px 0;">@c.Content1</p>
+                                        }
+                                    }
+                                }
                             </div>
                         </div>
                         <div class="commant-section">
@@ -266,7 +273,7 @@
                 </div>
                 <div class="col-md-3">
                     <h1>Tin Mới Nhất</h1>
-                    @foreach (News n in ViewBag.Top5LatestTransferNews)
+                    @foreach (News n in ViewBag.Top5LatestNews)
                     {
                         <div class="news-post-holder">
                             <div class="news-post-widget">
@@ -274,7 +281,7 @@
                                 <div class="news-post-detail">
                                     <span class="date">@n.DatePublished</span>
                                     <h2>
-                                        <a href="/News/NewsDetail/@n.NewsId">@n.Title</a>
+                                        <a href="/News/NewsDetails?NewsId=@n.NewsId">@n.Title</a>
                                     </h2>
                                     <p>@n.ShortDescription</p>
                                 </div>
@@ -294,7 +301,7 @@
                     <div class="full">
                         <div class="footer-widget">
                             <div class="footer-logo">
-                                <a href="#"><img src="images/footer-logo.png" alt="#" /></a>
+                                <a href="/Home/Index"><img src="~/images/footer-logo.png" alt="#" /></a>
                             </div>
                             <p>
                                 Most of our events have hard and easy route choices as we are always keen to encourage new
@@ -314,9 +321,9 @@
                         <div class="footer-widget">
                             <h3>Menu</h3>
                             <ul class="footer-menu">
-                                <li><a href="">Trang Chủ</a></li>
-                                <li><a href="">Giới Thiệu</a></li>
-                                <li><a href="">Liên Lạc</a></li>
+                                <li><a href="/Home/Index">Trang Chủ</a></li>
+                                <li><a href="/Home/About">Giới Thiệu</a></li>
+                                <li><a href="/Home/Contact">Liên Lạc</a></li>
                             </ul>
                         </div>
                     </div>

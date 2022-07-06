@@ -11,7 +11,7 @@ namespace FootballNews.Logics
         {
             using (var context = new FootballNewsContext())
             {
-                return context.News.Where(x => x.CategoryId != 8).Take(5).OrderByDescending(x => x.DatePublished).ToList();
+                return context.News.Take(5).OrderByDescending(x => x.DatePublished).ToList();
             }
         }
 
@@ -27,11 +27,11 @@ namespace FootballNews.Logics
         {
             using (var context = new FootballNewsContext())
             {
-                return context.News.Where(x => x.CategoryId == CategoryId).Skip(Offset - 1).Take(Count).ToList();
+                return context.News.Where(x => x.CategoryId == CategoryId).Skip(Offset - 1).Take(Count).OrderByDescending(x => x.DatePublished).ToList();
             }
         }
 
-        public int GetNumberOfOrders(int CategoryId)
+        public int GetNumberOfNews(int CategoryId)
         {
             using (var context = new FootballNewsContext())
             {
