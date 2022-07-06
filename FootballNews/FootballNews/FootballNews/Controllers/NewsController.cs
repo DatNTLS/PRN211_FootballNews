@@ -1,7 +1,7 @@
 ﻿using FootballNews.Logics;
 using FootballNews.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace FootballNews.Controllers
 {
@@ -21,8 +21,8 @@ namespace FootballNews.Controllers
                 Page = 1;
             }
 
-            int PageSize = 2;
-            ViewBag.AllNewsByCategory = newsManager.GetAllNewsByCategoryId(CategoryId, (Page - 1) * PageSize + 1, PageSize);
+            int PageSize = 5;
+            ViewBag.AllNewsByCategory = newsManager.GetAllNewsByCategoryId(CategoryId, (Page - 1) * PageSize, PageSize);
 
             int TotalNews = newsManager.GetNumberOfOrders(CategoryId);
             int TotalPage = TotalNews / PageSize;
@@ -36,7 +36,21 @@ namespace FootballNews.Controllers
             ViewData["CurrentPage"] = Page;
             ViewData["CurrentCategory"] = CategoryId;
 
-            return View("Views/Home/NewsList.cshtml");
+            return View("Views/News/NewsList.cshtml");
+        }
+
+        public IActionResult NewsDetails(int NewsId)
+        {
+            CategoryManager categoryManager = new CategoryManager();
+            ViewBag.Top4Categories = categoryManager.GetTop4Categories();
+            ViewBag.AllOtherCategories = categoryManager.GetAllOtherCategories();
+
+            NewsManager newsManager = new NewsManager();
+            ViewBag.Top5LatestTransferNews = newsManager.GetTop5LatestTransferNews();
+
+            ViewData["NewsDetails"] = newsManager.GetNewsById(NewsId);
+            ViewBag.NewsDetails = ViewData["NewsDetails"].ToString();
+            return View("Views/News/NewsDetails.cshtml");
         }
     }
 }
