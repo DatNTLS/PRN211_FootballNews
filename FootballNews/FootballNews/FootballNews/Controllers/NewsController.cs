@@ -97,11 +97,8 @@ namespace FootballNews.Controllers
             return View("Views/News/NewsDetails.cshtml");
         }
 
-
-        [HttpGet]
         public IActionResult SearchNews(string NewsValue)
         {
-
             CategoryManager categoryManager = new CategoryManager();
             ViewBag.Top4Categories = categoryManager.GetTop4Categories();
             ViewBag.AllOtherCategories = categoryManager.GetAllOtherCategories();
@@ -124,32 +121,6 @@ namespace FootballNews.Controllers
 
             return View("Views/News/SearchResults.cshtml");
         }
-
-        //Search News By Ttile & Short Description
-        //[HttpPost]
-        //public IActionResult SearchNews(string NewsValue)
-        //{
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        NewsManager newsManager = new NewsManager();
-
-        //        ViewBag.SearchResults = newsManager.SearchNewsByTitle(NewsValue);
-        //        ViewBag.NumberResults = newsManager.SearchNewsByTitle(NewsValue).Count;
-
-
-        //        if (ViewBag.SearchResults == null)
-        //        {
-        //            ViewData["Result"] = "Không Tìm Thấy Kết Qủa Nào Cho [" + NewsValue + "]";
-        //        }
-        //        else
-        //        {
-        //            ViewData["Result"] = "Có (" + ViewBag.NumberResults + ") Kết Qủa Tìm Kiếm Cho '" + NewsValue + "'";
-        //        }
-        //        return RedirectToAction("SearchNews", "News", new { NewsValue = NewsValue });
-        //    }
-        //    return View();
-        //}
 
         //Comment Action
         [HttpPost]
