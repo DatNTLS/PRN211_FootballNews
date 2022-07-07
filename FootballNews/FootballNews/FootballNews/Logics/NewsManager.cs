@@ -52,7 +52,7 @@ namespace FootballNews.Logics
         {
             using (var context = new FootballNewsContext())
             {
-                return context.News.Where(x => x.Title.Contains(NewsValue) || x.ShortDescription.Contains(NewsValue)).ToList();
+                return context.News.Where(x => x.Title.Equals(NewsValue)).OrderByDescending(x => x.DatePublished).ToList();
             }
         }
     }

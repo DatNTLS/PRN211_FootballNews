@@ -188,3 +188,4 @@ D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Vi
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Home\About.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Home\Contact.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\User\ChangeNewPassword.cshtml.g.cs
+D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\News\SearchResults.cshtml.g.cs

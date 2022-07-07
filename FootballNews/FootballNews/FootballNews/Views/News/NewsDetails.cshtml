@@ -169,7 +169,7 @@
                                             <div class="search-bar">
                                                 <div id="imaginary_container">
                                                     <div class="input-group stylish-input-group">
-                                                        <input type="text" class="form-control" name="NewsValue" placeholder="Search">
+                                                        <input type="text" class="form-control" name="NewsValue" placeholder="Search" required>
                                                         <span class="input-group-addon">
                                                             <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                                                         </span>
@@ -278,6 +278,12 @@
                                                         <h5>@u.UserName</h5>
                                                     }
                                                 }
+                                                <p>
+                                                    <span class="c_date">@c.Time</span> | <span>
+                                                        <a rel="nofollow"
+                                                   class="comment-reply-link" href="#">Reply</a>
+                                                    </span>
+                                                </p>
                                                 <p class="msg">
                                                     @c.Content
                                                 </p>
@@ -295,7 +301,7 @@
                                     <form action="addComment" method="post" id="comments_form" class="form-horizontal1">
                                         <div class="comment-box-field">
                                             <div class=" col-sm-12 col-xs-12">
-                                                <div class="comment-box-full"><textarea id="comments" class="form-control4" placeholder="Comments" name="Comment" cols="45" rows="3" aria-required="true"></textarea></div>
+                                                <div class="comment-box-full"><textarea id="comments" class="form-control4" placeholder="Comments" name="Comment" cols="45" rows="3" aria-required="true" required></textarea></div>
                                             </div>
                                             <div class="col-lg-12">
                                                 <div class="comment-box-submit">
