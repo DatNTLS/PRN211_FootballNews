@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 #nullable disable
 
@@ -27,10 +28,14 @@ namespace FootballNews.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=localhost;database=FootballNews;user=sa;password=123456");
+                if (!optionsBuilder.IsConfigured)
+                {
+                    var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+                    optionsBuilder.UseSqlServer(config.GetConnectionString("FootballNewsConStr"));
+                }
             }
         }
 
@@ -49,7 +54,7 @@ namespace FootballNews.Models
             {
                 entity.ToTable("Comment");
 
-                entity.Property(e => e.Content).HasColumnType("ntext");
+                entity.Property(e => e.Content).HasMaxLength(4000);
 
                 entity.HasOne(d => d.News)
                     .WithMany(p => p.Comments)
@@ -67,7 +72,7 @@ namespace FootballNews.Models
                 entity.ToTable("Content");
 
                 entity.Property(e => e.Content1)
-                    .HasColumnType("ntext")
+                    .HasMaxLength(4000)
                     .HasColumnName("Content");
 
                 entity.HasOne(d => d.Image)
@@ -80,7 +85,7 @@ namespace FootballNews.Models
             {
                 entity.ToTable("Image");
 
-                entity.Property(e => e.ImageUrl).HasColumnType("ntext");
+                entity.Property(e => e.ImageUrl).HasMaxLength(256);
 
                 entity.HasOne(d => d.News)
                     .WithMany(p => p.Images)
@@ -94,11 +99,11 @@ namespace FootballNews.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.ShortDescription).HasColumnType("ntext");
+                entity.Property(e => e.ShortDescription).HasMaxLength(4000);
 
-                entity.Property(e => e.Thumbnail).HasColumnType("ntext");
+                entity.Property(e => e.Thumbnail).HasMaxLength(256);
 
-                entity.Property(e => e.Title).HasColumnType("ntext");
+                entity.Property(e => e.Title).HasMaxLength(4000);
 
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.News)
@@ -122,7 +127,7 @@ namespace FootballNews.Models
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.Avatar).HasColumnType("ntext");
+                entity.Property(e => e.Avatar).HasMaxLength(256);
 
                 entity.Property(e => e.Email).HasMaxLength(256);
 

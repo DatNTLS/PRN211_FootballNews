@@ -48,12 +48,16 @@ namespace FootballNews.Logics
             }
         }
 
-        public List<News> SearchNews(string NewsValue)
+        public List<News> SearchNewsByTitle(string NewsValue)
+
         {
             using (var context = new FootballNewsContext())
             {
-                return context.News.Where(x => x.Title.Equals(NewsValue)).OrderByDescending(x => x.DatePublished).ToList();
+
+                return context.News.Where(x => x.Title.Contains(NewsValue)).OrderByDescending(x => x.DatePublished).ToList();
+
             }
+
         }
     }
 }

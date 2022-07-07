@@ -99,7 +99,7 @@ namespace FootballNews.Controllers
 
 
         [HttpGet]
-        public IActionResult SearchNews()
+        public IActionResult SearchNews(string NewsValue)
         {
 
             CategoryManager categoryManager = new CategoryManager();
@@ -110,34 +110,46 @@ namespace FootballNews.Controllers
             ViewBag.Top5LatestNews = newsManager.GetTop5LatestNews();
             ViewData["CategoryName"] = "Tin Tức Bóng Đá";
 
+            List<News> news = newsManager.SearchNewsByTitle(NewsValue);
+            ViewBag.SearchResults = news;
+
+            if (ViewBag.SearchResults != null)
+            {
+                ViewData["Result"] = "Có (" + news.Count + ") Kết Qủa Tìm Kiếm Cho '" + NewsValue + "'";
+            }
+            else
+            {
+                ViewData["Result"] = "Không Tìm Thấy Kết Qủa Nào Cho '" + NewsValue + "'";
+            }
+
             return View("Views/News/SearchResults.cshtml");
         }
 
         //Search News By Ttile & Short Description
-        [HttpPost]
-        public IActionResult SearchNews(string NewsValue)
-        {
+        //[HttpPost]
+        //public IActionResult SearchNews(string NewsValue)
+        //{
 
-            if (ModelState.IsValid)
-            {
-                NewsManager newsManager = new NewsManager();
+        //    if (ModelState.IsValid)
+        //    {
+        //        NewsManager newsManager = new NewsManager();
 
-                ViewBag.SearchResults = newsManager.SearchNews(NewsValue);
-                ViewBag.NumberResults = newsManager.SearchNews(NewsValue).Count;
+        //        ViewBag.SearchResults = newsManager.SearchNewsByTitle(NewsValue);
+        //        ViewBag.NumberResults = newsManager.SearchNewsByTitle(NewsValue).Count;
 
 
-                if (ViewBag.SearchResults == null)
-                {
-                    ViewData["Result"] = "Không Tìm Thấy Kết Qủa Nào Cho [" + NewsValue + "]";
-                }
-                else
-                {
-                    ViewData["Result"] = "Có (" + ViewBag.NumberResults + ") Kết Qủa Tìm Kiếm Cho '" + NewsValue + "'";
-                }
-                return RedirectToAction("SearchNews", "News", new { NewsValue = NewsValue });
-            }
-            return View();
-        }
+        //        if (ViewBag.SearchResults == null)
+        //        {
+        //            ViewData["Result"] = "Không Tìm Thấy Kết Qủa Nào Cho [" + NewsValue + "]";
+        //        }
+        //        else
+        //        {
+        //            ViewData["Result"] = "Có (" + ViewBag.NumberResults + ") Kết Qủa Tìm Kiếm Cho '" + NewsValue + "'";
+        //        }
+        //        return RedirectToAction("SearchNews", "News", new { NewsValue = NewsValue });
+        //    }
+        //    return View();
+        //}
 
         //Comment Action
         [HttpPost]

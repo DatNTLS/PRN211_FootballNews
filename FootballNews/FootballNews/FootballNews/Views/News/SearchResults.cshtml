@@ -200,7 +200,7 @@
             <div class="row">
                 <div class="col-lg-9 col-sm-12 col-xs-12">
                     <h1>@ViewData["Result"]</h1>
-                    @if (ViewData["Result"] != null)
+                    @if (ViewBag.SearchResults != null)
                     {
                         @foreach (News n in ViewBag.SearchResults)
                         {
