@@ -48,6 +48,12 @@ namespace FootballNews.Logics
             }
         }
 
-
+        public List<News> SearchNews(string NewsValue)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.News.Where(x => x.Title.Contains(NewsValue) || x.ShortDescription.Contains(NewsValue)).ToList();
+            }
+        }
     }
 }

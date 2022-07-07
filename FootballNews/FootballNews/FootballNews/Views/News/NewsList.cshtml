@@ -187,10 +187,10 @@
         </div>
         <div class="inner-information-text">
             <div class="container">
-                <h3>@ViewData["CurrentCategory"]</h3>
+                <h3>@ViewData["CategoryName"]</h3>
                 <ul class="breadcrumb">
                     <li><a href="/Home/Index">Trang Chủ</a></li>
-                    <li class="active">@ViewData["CurrentCategory"]</li>
+                    <li class="active">@ViewData["CategoryName"]</li>
                 </ul>
             </div>
         </div>
@@ -199,7 +199,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-sm-12 col-xs-12">
-                    <h1>@ViewData["CurrentCategory"]</h1>
+                    <h1>@ViewData["CategoryName"]</h1>
                     @foreach (News n in ViewBag.AllNewsByCategory)
                     {
                         <div class="news-post-holder">
@@ -216,18 +216,18 @@
                         </div>
                     }
                     <div class="pagination">
-                        @if (Convert.ToInt32(ViewData["TotalPage"]) > 1)
+                        @if (Convert.ToInt32(ViewData["CurrentPage"]) > 1)
                         {
-                            <a href="">&laquo;</a>
+                            <a href="/News/NewsList/@ViewData["CurrentPage"]-1">&laquo;</a>
                         }
-                        @for (int i = 1; i < Convert.ToInt32(ViewData["TotalPage"]); i++)
+                        @for (int i = 1; i <= (int)ViewData["TotalPage"]; i++)
                         {
-                            <a class="'@((int)ViewData["CurrentPage"]==i?"active":"")'"
+                            <a class='@((int)ViewData["CurrentPage"]==i?"active":"")'
                            href="/News/NewsList/@ViewData["CurrentCategory"]/@i">@i</a>
                         }
                         @if (Convert.ToInt32(ViewData["TotalPage"]) != Convert.ToInt32(ViewData["CurrentPage"]))
                         {
-                            <a href="">&raquo;</a>
+                            <a href="@ViewData["CurrentPage"]+1">&raquo;</a>
                         }
                     </div>
                     <style>

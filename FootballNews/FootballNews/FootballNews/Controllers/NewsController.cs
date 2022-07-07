@@ -24,7 +24,7 @@ namespace FootballNews.Controllers
             }
 
             int PageSize = 5;
-            ViewBag.AllNewsByCategory = newsManager.GetAllNewsByCategoryId(CategoryId, (Page - 1) * PageSize + 1, PageSize);
+            ViewBag.AllNewsByCategory = newsManager.GetAllNewsByCategoryId(CategoryId, (Page - 1) * PageSize+1, PageSize);
 
             int TotalNews = newsManager.GetNumberOfNews(CategoryId);
             int TotalPage = TotalNews / PageSize;
@@ -41,11 +41,11 @@ namespace FootballNews.Controllers
             var GetCategory = categoryManager.GetCategoryById(CategoryId);
             if (GetCategory.CategoryId == 8)
             {
-                ViewData["CurrentCategory"] = "Tin " + GetCategory.CategoryName;
+                ViewData["CategoryName"] = "Tin " + GetCategory.CategoryName;
             }
             else
             {
-                ViewData["CurrentCategory"] = "Tin Bóng Đá " + GetCategory.CategoryName;
+                ViewData["CategoryName"] = "Tin Bóng Đá " + GetCategory.CategoryName;
             }
 
             return View("Views/News/NewsList.cshtml");
@@ -94,10 +94,17 @@ namespace FootballNews.Controllers
             return View("Views/News/NewsDetails.cshtml");
         }
 
-
+        [HttpPost]
         public IActionResult SearchNews(string NewsValue)
         {
+            CategoryManager categoryManager = new CategoryManager();
+            ViewBag.Top4Categories = categoryManager.GetTop4Categories();
+            ViewBag.AllOtherCategories = categoryManager.GetAllOtherCategories();
 
+            NewsManager newsManager = new NewsManager();
+            ViewBag.Top5LatestNews = newsManager.GetTop5LatestNews();
+
+            newsManager.SearchNews(NewsValue);
             return View("Views/News/NewsList.cshtml");
         }
 
