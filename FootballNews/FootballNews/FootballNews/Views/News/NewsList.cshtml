@@ -90,14 +90,22 @@
                                     User CurrentUser = JsonConvert.DeserializeObject<User>(Context.Session.GetString("CurrentUser"));
                                     <ul class="nav navbar-nav">
                                         <li class="dropdown">
-                                            <a href="" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
+                                            <a href="" class="dropdown-toggle" data-toggle="dropdown" style="color: #d8302f;">
                                                 Xin Chào ! @CurrentUser.UserName <span class="caret"></span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-item" style="height: auto;">
                                                 <li class="col-sm-12">
                                                     <ul class="menu-inner">
-                                                        <li><a href="#">Hồ Sơ</a></li>
-                                                        <li><a href="#">Đổi Mật Khẩu</a></li>
+                                                        <li><a href="/User/UserProfile">Hồ Sơ</a></li>
+                                                        <li><a href="/User/ChangeNewPassword">Đổi Mật Khẩu</a></li>
+                                                        @if (CurrentUser.RoleId == 1)
+                                                        {
+                                                            <li><a href="/Admin/ManageUser">Quản Lý</a></li>
+                                                        }
+                                                        @if (CurrentUser.RoleId == 2)
+                                                        {
+                                                            <li><a href="#">Bài Viết Của Tôi</a></li>
+                                                        }
                                                         <li><a href="/User/Logout">Đăng Xuất</a></li>
                                                     </ul>
                                                 </li>

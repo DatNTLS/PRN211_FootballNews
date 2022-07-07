@@ -23,11 +23,11 @@ namespace FootballNews.Logics
             }
         }
 
-        public User GetUserByPassword(string Password)
+        public User CheckLogin(string Username, string Password)
         {
             using (var context = new FootballNewsContext())
             {
-                return context.Users.Where(x => x.Password == Password).FirstOrDefault();
+                return context.Users.Where(x => x.UserName == Username && x.Password == Password).FirstOrDefault();
             }
         }
 
@@ -95,6 +95,17 @@ namespace FootballNews.Logics
             using (var context = new FootballNewsContext())
             {
                 return context.Users.ToList();
+            }
+        }
+
+        public void UpdateUserProfile(string Avatar, string Username, string Email)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                User CurrentUser = context.Users.Where(x => x.Email == Email).FirstOrDefault();
+                CurrentUser.UserName = Username;
+                CurrentUser.Avatar = Avatar;
+                context.SaveChanges();
             }
         }
     }
