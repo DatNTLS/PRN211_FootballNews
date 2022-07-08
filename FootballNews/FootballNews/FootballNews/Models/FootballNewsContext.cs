@@ -54,6 +54,10 @@ namespace FootballNews.Models
             {
                 entity.ToTable("Comment");
 
+                entity.Property(e => e.Time)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
                 entity.Property(e => e.Content).HasMaxLength(4000);
 
                 entity.HasOne(d => d.News)

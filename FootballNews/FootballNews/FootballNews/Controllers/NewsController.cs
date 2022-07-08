@@ -142,5 +142,18 @@ namespace FootballNews.Controllers
             return View();
         }
 
+        //Delete Comment Action
+        [HttpGet]
+        public IActionResult DeleteComment(int CommentId, int NewsId)
+        {
+            CommentManager commentManager = new CommentManager();
+            if (ModelState.IsValid)
+            {
+                commentManager.DeleteComment(CommentId);
+                return RedirectToAction("NewsDetails", "News", new { NewsId = NewsId });
+            }
+            return View();
+        }
+
     }
 }

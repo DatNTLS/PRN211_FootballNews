@@ -257,7 +257,7 @@
                                                     {
                                                         if (u.UserId == c.UserId)
                                                         {
-                                                            if (u.Avatar.Equals(""))
+                                                            if (u.Avatar == null)
                                                             {
                                                                 <img class="img-responsive" src="~/images/avatar/2120b058cb9946e36306778243eadae5.jpg" alt="#">
                                                             }
@@ -279,10 +279,18 @@
                                                     }
                                                 }
                                                 <p>
-                                                    <span class="c_date">@c.Time</span> | <span>
-                                                        <a rel="nofollow"
-                                                   class="comment-reply-link" href="#">Reply</a>
-                                                    </span>
+                                                    <span class="c_date">@c.Time</span> |
+                                                    @if (CurrentUser != null)
+                                                    {
+                                                        @if (CurrentUser.UserId == c.UserId)
+                                                        {
+                                                            <span>
+                                                                <a rel="nofollow"
+                                                            class="comment-reply-link" href="/News/DeleteComment?CommentId=@c.CommentId&NewsId=@c.NewsId">Delete</a>
+                                                            </span>
+                                                        }
+                                                    }
+
                                                 </p>
                                                 <p class="msg">
                                                     @c.Content
