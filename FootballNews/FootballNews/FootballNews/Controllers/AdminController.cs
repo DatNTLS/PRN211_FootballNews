@@ -1,27 +1,81 @@
 ﻿using FootballNews.Logics;
+using FootballNews.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace FootballNews.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult ManageUser()
+        public IActionResult Error()
         {
-            UserManager userManager = new UserManager();
-            RoleManager roleManager = new RoleManager();
-            ViewBag.AllUser = userManager.GetAllUsers();
-            int RoleId = 1;
-            int ok = userManager.GetNumberUserByRole(RoleId);
-            return View("Views/Admin/ManageUser.cshtml");
+            return View("Views/Admin/Error.cshtml");
         }
 
-        public IActionResult AddUser()
+        public IActionResult ManageUser()
         {
+            User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
+            if (CurrentUser.RoleId != 1)
+            {
+                return Error();
+            } else
+            {
+                UserManager userManager = new UserManager();
+                RoleManager roleManager = new RoleManager();
+
+                List<User> users = userManager.GetAllUsers();
+                ViewBag.AllUsers = users;
+
+                List<Role> roles = roleManager.GetAllRoles();
+                ViewBag.AllRoles = roles;
+
+                ViewData["NumberAdmin"] = userManager.GetNumberUserByRole(1);
+                ViewData["NumberJournalist"] = userManager.GetNumberUserByRole(2);
+                ViewData["NumberReader"] = userManager.GetNumberUserByRole(3);
+                ViewData["TotalUser"] = users.Count;
+
+                return View("Views/Admin/ManageUser.cshtml");
+            }
+            
+        }
+
+        public IActionResult AddUser(string Avatar, string Username, string Email, string Password, int Role)
+        {
+            UserManager userManager = new UserManager();
+            if (ModelState.IsValid)
+            {
+                if (userManager.GetUserByName(Username) != null)
+                {
+                    ViewBag.Error1 = "Tên người dùng đã được sử dụng !";
+                }
+                if (userManager.GetUserByEmail(Email) != null)
+                {
+                    ViewBag.Error2 = "Địa chỉ email đã được sử dụng !";
+                }
+                if (userManager.GetUserByName(Username) != null || userManager.GetUserByEmail(Email) != null)
+                {
+                    return ManageUser();
+                }
+                else
+                {
+                    userManager.AddUser(Avatar, Username, Email, Password, Role);
+                    return RedirectToAction("ManageUser", "Admin");
+                }
+
+            }
             return View();
         }
 
-        public IActionResult DeleteUser()
+        public IActionResult DeleteUser(int UserId)
         {
+            UserManager userManager = new UserManager();
+            if (ModelState.IsValid)
+            {
+                userManager.DeleteUser(UserId);
+                return ManageUser();
+            }
             return View();
         }
 

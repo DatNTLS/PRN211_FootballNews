@@ -43,10 +43,55 @@ namespace FootballNews.Logics
         {
             using (var context = new FootballNewsContext())
             {
-                User user = new User { UserName = Username, Email = Email, Password = Password, Avatar = ""
-                    ,  RoleId = 3, Otp = Otp, Status = false
+                User user = new User
+                {
+                    UserName = Username,
+                    Email = Email,
+                    Password = Password,
+                    Avatar = ""
+                    ,
+                    RoleId = 3,
+                    Otp = Otp,
+                    Status = false
                 };
                 context.Add(user);
+                context.SaveChanges();
+            }
+        }
+
+        public User GetUserByRoleId(int RoleId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Users.Where(x => x.RoleId == RoleId).FirstOrDefault();
+            }
+        }
+
+        public void AddUser(string Avatar, string Username, string Email, string Password, int RoleId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                User u = new User
+                {
+                    UserName = Username,
+                    Email = Email,
+                    Password = Password,
+                    Avatar = Avatar,
+                    RoleId = RoleId,
+                    Otp = null,
+                    Status = true
+                };
+                context.Add(u);
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteUser(int UserId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                User u = context.Users.Where(x => x.UserId == UserId).FirstOrDefault();
+                context.Remove(u);
                 context.SaveChanges();
             }
         }

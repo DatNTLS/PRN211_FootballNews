@@ -189,3 +189,4 @@ D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\refint\F
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\FootballNews.pdb
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\FootballNews.genruntimeconfig.cache
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\ref\FootballNews.dll
+D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Admin\Error.cshtml.g.cs
