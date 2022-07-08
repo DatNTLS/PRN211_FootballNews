@@ -1,5 +1,6 @@
 ﻿using FootballNews.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FootballNews.Logics
@@ -14,6 +15,13 @@ namespace FootballNews.Logics
             }
         }
 
+        public int GetNumberUserByRole(int RoleId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Users.Where(x => x.RoleId == RoleId).Count();
+            }
+        }
 
         public User GetUserByEmail(string Email)
         {
@@ -90,7 +98,7 @@ namespace FootballNews.Logics
             }
         }
 
-        public dynamic GetAllUsers()
+        public List<User> GetAllUsers()
         {
             using (var context = new FootballNewsContext())
             {
