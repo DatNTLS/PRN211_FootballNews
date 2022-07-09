@@ -16,7 +16,7 @@ namespace FootballNews.Logics
             }
         }
 
-        public void DeleteImageById(int NewsId)
+        public void DeleteImagesById(int NewsId)
         {
             using (var context = new FootballNewsContext())
             {
@@ -26,6 +26,28 @@ namespace FootballNews.Logics
                     context.Remove(i);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public void AddImages(int NewsId, string ImageUrl)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                Image i = new Image
+                {
+                    ImageUrl = ImageUrl,
+                    NewsId = NewsId,
+                };
+                context.Add(i);
+                context.SaveChanges();
+            }
+        }
+
+        public Image GetLastImage()
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Images.Take(1).OrderByDescending(x => x.ImageId).FirstOrDefault();
             }
         }
     }

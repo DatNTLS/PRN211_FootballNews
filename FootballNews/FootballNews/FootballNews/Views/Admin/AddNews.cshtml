@@ -94,7 +94,10 @@
 
                 <label for="">Type News</label>
                 <select name="Category">
-                    <option value="">Chuyển Nhượng</option>
+                    @foreach (Category c in ViewBag.AllCategories)
+                   {
+                       <option value="@c.CategoryId">@c.CategoryName</option>
+                   }
                 </select>
 
                 <input id="addMore" type="button" value="Add More Image/Content" style="background-color: #5cb85c;"><br><br>

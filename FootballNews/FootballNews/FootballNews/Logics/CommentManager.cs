@@ -42,7 +42,7 @@ namespace FootballNews.Logics
             }
         }
 
-        public void DeleteCommentByNewsId(int NewsId)
+        public void DeleteCommentsById(int NewsId)
         {
             using (var context = new FootballNewsContext())
             {

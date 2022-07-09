@@ -15,7 +15,7 @@ namespace FootballNews.Logics
             }
         }
 
-        public void DeleteContentById(int NewsId)
+        public void DeleteContentsById(int NewsId)
         {
             using (var context = new FootballNewsContext())
             {
@@ -25,6 +25,20 @@ namespace FootballNews.Logics
                     context.Remove(c);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public void AddContents(int ImageId, string Content)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                Content c = new Content
+                {
+                    Content1 = Content,
+                    ImageId = ImageId,
+                };
+                context.Add(c);
+                context.SaveChanges();
             }
         }
     }

@@ -60,14 +60,12 @@ namespace FootballNews.Logics
         }
 
         public List<News> SearchNewsByTitle(string NewsValue)
-
         {
             using (var context = new FootballNewsContext())
             {
                 return context.News.Where(x => x.Title.Contains(NewsValue)).OrderByDescending(x => x.DatePublished).ToList();
 
             }
-
         }
 
         public void DeleteNewsById(int NewsId)
@@ -77,6 +75,32 @@ namespace FootballNews.Logics
                 News n = context.News.Where(x => x.NewsId == NewsId).FirstOrDefault();
                 context.Remove(n);
                 context.SaveChanges();
+            }
+        }
+
+        public void AddNews(int UserId, string Title, string ShortDescription, string Thumbnail, int Category)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                News news = new News
+                {
+                    AuthorId = UserId,
+                    Title = Title,
+                    ShortDescription = ShortDescription,
+                    Thumbnail = Thumbnail,
+                    CategoryId = Category,
+                    Status = true,
+                };
+                context.Add(news);
+                context.SaveChanges();
+            }
+        }
+
+        public News GetLatestNews()
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.News.Take(1).OrderByDescending(x => x.NewsId).FirstOrDefault();
             }
         }
     }

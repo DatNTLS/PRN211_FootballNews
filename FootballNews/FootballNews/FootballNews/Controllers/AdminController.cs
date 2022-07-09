@@ -12,7 +12,7 @@ namespace FootballNews.Controllers
     {
         public IActionResult Error()
         {
-            return View("Views/Admin/Error.cshtml");
+            return View("Views/Error.cshtml");
         }
 
         public IActionResult ManageUser()
@@ -137,14 +137,31 @@ namespace FootballNews.Controllers
         [HttpGet]
         public IActionResult AddNews()
         {
+            CategoryManager categoryManager = new CategoryManager();
+            ViewBag.AllCategories = categoryManager.GetAllCategories();
             return View("Views/Admin/AddNews.cshtml");
         }
 
 
         [HttpPost]
-        public IActionResult AddNews(string Title, string ShortDescription, string Thumbnail, string Category, string[] Image, string[] Content)
+        public IActionResult AddNews(string Title, string ShortDescription, string Thumbnail, int Category, string[] Image, string[] Content)
         {
-            return View("Views/Admin/AddNews.cshtml");
+            User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
+
+            NewsManager newsManager = new NewsManager();
+            ImageManager imageManager = new ImageManager();
+            ContentManager contentManager = new ContentManager();
+
+            newsManager.AddNews(CurrentUser.UserId, Title, ShortDescription, Thumbnail, Category);
+            News news = newsManager.GetLatestNews();
+            for (int i = 0; i < Image.Length; i++)
+            {
+                imageManager.AddImages(news.NewsId, Image[i]);
+                Image image = imageManager.GetLastImage();
+                contentManager.AddContents(image.ImageId, Content[i]);
+            }
+
+            return RedirectToAction("ManageNews","Admin");
         }
 
         public IActionResult DeleteNews(int NewsId)
@@ -154,11 +171,10 @@ namespace FootballNews.Controllers
             ContentManager contentManager = new ContentManager();
             CommentManager commentManager = new CommentManager();
 
-            var context = new FootballNewsContext();
-            contentManager.DeleteContentById(NewsId);
-            imageManager.DeleteImageById(NewsId);
+            commentManager.DeleteCommentsById(NewsId);
+            contentManager.DeleteContentsById(NewsId);
+            imageManager.DeleteImagesById(NewsId);
             newsManager.DeleteNewsById(NewsId);
-            commentManager.DeleteCommentByNewsId(NewsId);
             
             return RedirectToAction("ManageNews", "Admin");
         }
