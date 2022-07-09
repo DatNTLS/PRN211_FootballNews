@@ -100,9 +100,36 @@ namespace FootballNews.Controllers
 
         }
 
-        public IActionResult ManageNews()
+        public IActionResult ManageNews(int CategoryId,int Page)
         {
-            return View("Views/Admin/ManageNews.cshtml");
+            User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
+            if (CurrentUser.RoleId != 1)
+            {
+                return Error();
+            }
+            else
+            {
+                NewsManager newsManager = new NewsManager();
+                UserManager userManager = new UserManager();
+                CategoryManager categoryManager = new CategoryManager();
+                int PageSize = 10;
+                ViewBag.AllNews = newsManager.GetAllNewsByCategoryId(CategoryId, (Page - 1) * PageSize + 1, PageSize);
+
+                int TotalNews = newsManager.GetNumberOfNews(CategoryId);
+                int TotalPage = TotalNews / PageSize;
+
+                if (TotalNews % PageSize != 0)
+                {
+                    TotalPage++;
+                }
+
+                ViewData["TotalPage"] = TotalPage;
+                ViewData["CurrentPage"] = Page;
+                ViewData["CurrentCategory"] = 0;
+
+                return View("Views/Admin/ManageNews.cshtml");
+
+            }
         }
 
         public IActionResult AddNews()

@@ -27,7 +27,13 @@ namespace FootballNews.Logics
         {
             using (var context = new FootballNewsContext())
             {
-                return context.News.Where(x => x.CategoryId == CategoryId).Skip(Offset - 1).Take(Count).OrderByDescending(x => x.DatePublished).ToList();
+                if (CategoryId != 0)
+                {
+                    return context.News.Where(x => x.CategoryId == CategoryId).Skip(Offset - 1).Take(Count).OrderByDescending(x => x.DatePublished).ToList();
+                } else
+                {
+                    return context.News.Skip(Offset - 1).Take(Count).ToList();
+                }
             }
         }
 
@@ -35,8 +41,13 @@ namespace FootballNews.Logics
         {
             using (var context = new FootballNewsContext())
             {
-
-                return context.News.Where(x => x.CategoryId == CategoryId).Count();
+                if (CategoryId != 0)
+                {
+                    return context.News.Where(x => x.CategoryId == CategoryId).Count();
+                } else
+                {
+                    return context.News.Count();
+                }
             }
         }
 
@@ -53,11 +64,12 @@ namespace FootballNews.Logics
         {
             using (var context = new FootballNewsContext())
             {
-
                 return context.News.Where(x => x.Title.Contains(NewsValue)).OrderByDescending(x => x.DatePublished).ToList();
 
             }
 
         }
+
+        
     }
 }
