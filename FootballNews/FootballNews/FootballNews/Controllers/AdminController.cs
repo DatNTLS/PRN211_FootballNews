@@ -134,10 +134,17 @@ namespace FootballNews.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult AddNews()
         {
+            return View("Views/Admin/AddNews.cshtml");
+        }
 
-            return View();
+
+        [HttpPost]
+        public IActionResult AddNews(string Title, string ShortDescription, string Thumbnail, string Category, string[] Image, string[] Content)
+        {
+            return View("Views/Admin/AddNews.cshtml");
         }
 
         public IActionResult DeleteNews(int NewsId)
