@@ -127,19 +127,16 @@ namespace FootballNews.Controllers
         public IActionResult AddComment(int NewsId, int UserId, string Comment)
         {
             CommentManager commentManager = new CommentManager();
-            if (ModelState.IsValid)
+
+            if (HttpContext.Session.GetString("CurrentUser") == null)
             {
-                if (HttpContext.Session.GetString("CurrentUser") == null)
-                {
-                    return RedirectToAction("Login", "User", new { Area = "" });
-                }
-                else
-                {
-                    commentManager.AddComment(NewsId, UserId, Comment);
-                    return RedirectToAction("NewsDetails", "News", new { NewsId = NewsId });
-                }
+                return RedirectToAction("Login", "User", new { Area = "" });
             }
-            return View();
+            else
+            {
+                commentManager.AddComment(NewsId, UserId, Comment);
+                return RedirectToAction("NewsDetails", "News", new { NewsId = NewsId });
+            }
         }
 
         //Delete Comment Action
@@ -147,12 +144,8 @@ namespace FootballNews.Controllers
         public IActionResult DeleteComment(int CommentId, int NewsId)
         {
             CommentManager commentManager = new CommentManager();
-            if (ModelState.IsValid)
-            {
-                commentManager.DeleteComment(CommentId);
-                return RedirectToAction("NewsDetails", "News", new { NewsId = NewsId });
-            }
-            return View();
+            commentManager.DeleteComment(CommentId);
+            return RedirectToAction("NewsDetails", "News", new { NewsId = NewsId });
         }
 
     }

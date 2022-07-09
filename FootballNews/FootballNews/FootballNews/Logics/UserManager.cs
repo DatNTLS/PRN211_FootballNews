@@ -96,6 +96,16 @@ namespace FootballNews.Logics
             }
         }
 
+        public void SetRole(int SetRole, int UserId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                User CurrentUser = context.Users.Where(x => x.UserId == UserId).FirstOrDefault();
+                CurrentUser.RoleId = SetRole;
+                context.SaveChanges();
+            }
+        }
+
         public User GetUserByAuthorId(int AuthorId)
         {
             using (var context = new FootballNewsContext())

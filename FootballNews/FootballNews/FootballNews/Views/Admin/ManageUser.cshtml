@@ -157,19 +157,23 @@
                                 }
                                 <td>@u.Status</td>
                                 <td>
-                                    <select name="Role" id="exampleInputRole1">
-                                        @foreach (Role r in ViewBag.AllRoles)
-                                        {
-                                            <option value="@r.RoleId" selected='@(r.RoleId==u.RoleId?"selected":"")'>@r.RoleName</option>
-                                        }
-                                    </select>
+                                    <form action="SetRoleUser">
+                                        <select name="SetRole" onchange="this.form.submit()" id="exampleInputRole1">
+                                            @foreach (Role r in ViewBag.AllRoles)
+                                            {
+                                                <option selected="@(r.RoleId == u.RoleId?"selected":null)" value="@r.RoleId">@r.RoleName</option>
+                                            }
+                                        </select>
+                                        <input type="hidden" value="@u.UserId" name="UserId"/>
+                                    </form>
                                 </td>
                                 @if (@u.RoleId != 1)
                                 {
                                     <td>
                                         <a href="/Admin/DeleteUser?UserId=@u.UserId" class="btn btn-danger">Delete</a>
                                     </td>
-                                } else
+                                }
+                                else
                                 {
                                     <td>
                                         <a href="/Admin/Error" class="btn btn-danger">Delete</a>

@@ -9,8 +9,6 @@ using System.Linq;
 
 namespace FootballNews.Controllers
 {
-
-
     public class UserController : Controller
     {
 
@@ -26,36 +24,34 @@ namespace FootballNews.Controllers
         public IActionResult Login(string Username, string Password)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            if (userManager.GetUserByName(Username) == null)
             {
-                if (userManager.GetUserByName(Username) == null)
+                ViewBag.Error = "Tên người dùng không tồn tại !";
+                return Login();
+            }
+            else
+            {
+                if (userManager.CheckLogin(Username, Password) == null)
                 {
-                    ViewBag.Error = "Tên người dùng không tồn tại !";
+                    ViewBag.Error = "Mật khẩu không chính xác !";
                     return Login();
                 }
                 else
                 {
-                    if (userManager.CheckLogin(Username, Password) == null)
+                    if (userManager.GetUserByName(Username).Status == false)
                     {
-                        ViewBag.Error = "Mật khẩu không chính xác !";
-                        return Login();
+                        HttpContext.Session.SetString("CurrentEmail", userManager.GetUserByName(Username).Email);
+                        return RedirectToAction("Verify", "User");
                     }
                     else
                     {
-                        if (userManager.GetUserByName(Username).Status == false)
-                        {
-                            HttpContext.Session.SetString("CurrentEmail", userManager.GetUserByName(Username).Email);
-                            return RedirectToAction("Verify", "User");
-                        }
-                        else
-                        {
-                            HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(userManager.GetUserByName(Username)));
-                            return RedirectToAction("Index", "Home");
-                        }
+                        HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(userManager.GetUserByName(Username)));
+                        return RedirectToAction("Index", "Home");
                     }
                 }
             }
-            return View();
+
         }
 
         //Logout Action
@@ -77,53 +73,51 @@ namespace FootballNews.Controllers
         public IActionResult Register(string Username, string Email, string Password, string ConfirmPassword)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            User CheckUserName = userManager.GetUserByName(Username);
+            if (CheckUserName != null)
             {
-                User CheckUserName = userManager.GetUserByName(Username);
-                if (CheckUserName != null)
-                {
-                    ViewBag.Error1 = "Tên người dùng đã được sử dụng !";
-                }
-
-                User CheckEmail = userManager.GetUserByEmail(Email);
-                if (CheckEmail != null)
-                {
-                    ViewBag.Error2 = "Địa chỉ email đã được sử dụng !";
-                }
-
-                if (!Password.Equals(ConfirmPassword))
-                {
-                    ViewBag.Error3 = "Mật khẩu và xác nhận mật khẩu không khớp !";
-                }
-
-                if (CheckUserName != null || CheckEmail != null || !Password.Equals(ConfirmPassword))
-                {
-                    return Register();
-                }
-                else
-                {
-                    EmailSender emailSender = new EmailSender();
-                    String Otp = emailSender.GenerateRandomNumber();
-
-                    userManager.InsertUser(Username, Email, Password, Otp);
-
-                    String HtmlContent = "<h2>Xin chào " + Email + " ,</h2>" +
-                        "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
-                        "Hãy sử dụng mã này Để xác nhận tài khoản.<br><br>" +
-                        "Mã xác nhận : <span style='font - weight: bold; '>" + Otp + "</span><br><br>" +
-                        "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
-
-                    string FromEmail = "quizpracticeg6@gmail.com";
-                    string GetPassword = "mrxexghqvwyekhqk";
-
-                    HttpContext.Session.SetString("CurrentEmail", Email);
-
-                    emailSender.SendEmail(FromEmail, GetPassword, Email, "Xác Nhận Tài Khoản", HtmlContent);
-
-                    return RedirectToAction("Verify", "User");
-                }
+                ViewBag.Error1 = "Tên người dùng đã được sử dụng !";
             }
-            return View();
+
+            User CheckEmail = userManager.GetUserByEmail(Email);
+            if (CheckEmail != null)
+            {
+                ViewBag.Error2 = "Địa chỉ email đã được sử dụng !";
+            }
+
+            if (!Password.Equals(ConfirmPassword))
+            {
+                ViewBag.Error3 = "Mật khẩu và xác nhận mật khẩu không khớp !";
+            }
+
+            if (CheckUserName != null || CheckEmail != null || !Password.Equals(ConfirmPassword))
+            {
+                return Register();
+            }
+            else
+            {
+                EmailSender emailSender = new EmailSender();
+                String Otp = emailSender.GenerateRandomNumber();
+
+                userManager.InsertUser(Username, Email, Password, Otp);
+
+                String HtmlContent = "<h2>Xin chào " + Email + " ,</h2>" +
+                    "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
+                    "Hãy sử dụng mã này Để xác nhận tài khoản.<br><br>" +
+                    "Mã xác nhận : <span style='font - weight: bold; '>" + Otp + "</span><br><br>" +
+                    "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
+
+                string FromEmail = "quizpracticeg6@gmail.com";
+                string GetPassword = "mrxexghqvwyekhqk";
+
+                HttpContext.Session.SetString("CurrentEmail", Email);
+
+                emailSender.SendEmail(FromEmail, GetPassword, Email, "Xác Nhận Tài Khoản", HtmlContent);
+
+                return RedirectToAction("Verify", "User");
+            }
+
         }
 
         //Verify Screen
@@ -138,69 +132,67 @@ namespace FootballNews.Controllers
         public IActionResult Verify(string Otp)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            string CurrentEmail = HttpContext.Session.GetString("CurrentEmail");
+            string EmailFG = HttpContext.Session.GetString("EmailFG");
+
+            if (CurrentEmail != null)
             {
-                string CurrentEmail = HttpContext.Session.GetString("CurrentEmail");
-                string EmailFG = HttpContext.Session.GetString("EmailFG");
-                if (CurrentEmail != null)
+                User CheckOTP = userManager.CheckOTP(CurrentEmail, Otp);
+                if (CheckOTP == null)
                 {
-                    User CheckOTP = userManager.CheckOTP(CurrentEmail, Otp);
-                    if (CheckOTP == null)
-                    {
-                        ViewBag.Error = "Mã xác nhận không chính xác !";
-                        return Verify();
-                    }
-                    else
-                    {
-                        userManager.UpdateStatus(CurrentEmail, true);
-                        userManager.UpdateOtp(CurrentEmail, null);
-                        HttpContext.Session.Remove("CurrentEmail");
-                        return RedirectToAction("Login", "User");
-                    }
+                    ViewBag.Error = "Mã xác nhận không chính xác !";
+                    return Verify();
                 }
-
-                if (EmailFG != null)
+                else
                 {
-                    User CheckOTP = userManager.CheckOTP(EmailFG, Otp);
-                    if (CheckOTP == null)
-                    {
-                        ViewBag.Error = "Mã xác nhận không chính xác !";
-                        return Verify();
-                    }
-                    else
-                    {
-                        return RedirectToAction("ChangePassword", "User");
-                    }
+                    userManager.UpdateStatus(CurrentEmail, true);
+                    userManager.UpdateOtp(CurrentEmail, null);
+                    HttpContext.Session.Remove("CurrentEmail");
+                    return RedirectToAction("Login", "User");
                 }
-
             }
-            return View();
+
+            if (EmailFG != null)
+            {
+                User CheckOTP = userManager.CheckOTP(EmailFG, Otp);
+                if (CheckOTP == null)
+                {
+                    ViewBag.Error = "Mã xác nhận không chính xác !";
+                    return Verify();
+                }
+                else
+                {
+                    return RedirectToAction("ChangePassword", "User");
+                }
+            }
+
+            return Verify();
+
         }
 
         //Resend OTP Action
         public IActionResult Resend()
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
-            {
-                EmailSender emailSender = new EmailSender();
-                string CurrentEmail = HttpContext.Session.GetString("CurrentEmail");
-                string NewOtp = emailSender.GenerateRandomNumber();
-                String HtmlContent = "<h2>Xin chào " + CurrentEmail + " ,</h2>" +
-                        "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
-                        "Hãy sử dụng mã này Để xác nhận tài khoản.<br><br>" +
-                        "Mã xác nhận : <span style='font - weight: bold; '>" + NewOtp + "</span><br><br>" +
-                        "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
 
-                string FromEmail = "quizpracticeg6@gmail.com";
-                string GetPassword = "mrxexghqvwyekhqk";
+            EmailSender emailSender = new EmailSender();
+            string CurrentEmail = HttpContext.Session.GetString("CurrentEmail");
+            string NewOtp = emailSender.GenerateRandomNumber();
+            String HtmlContent = "<h2>Xin chào " + CurrentEmail + " ,</h2>" +
+                    "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
+                    "Hãy sử dụng mã này Để xác nhận tài khoản.<br><br>" +
+                    "Mã xác nhận : <span style='font - weight: bold; '>" + NewOtp + "</span><br><br>" +
+                    "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
 
-                emailSender.SendEmail(FromEmail, GetPassword, CurrentEmail, "Xác Nhận Tài Khoản", HtmlContent);
-                userManager.UpdateOtp(CurrentEmail, NewOtp);
+            string FromEmail = "quizpracticeg6@gmail.com";
+            string GetPassword = "mrxexghqvwyekhqk";
 
-                return RedirectToAction("Verify", "User");
-            }
-            return View();
+            emailSender.SendEmail(FromEmail, GetPassword, CurrentEmail, "Xác Nhận Tài Khoản", HtmlContent);
+            userManager.UpdateOtp(CurrentEmail, NewOtp);
+
+            return RedirectToAction("Verify", "User");
+
         }
 
         //Forgot Password Screen
@@ -215,35 +207,33 @@ namespace FootballNews.Controllers
         public IActionResult ForgotPassword(string Email)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            User CheckEmail = userManager.GetUserByEmail(Email);
+            if (CheckEmail == null)
             {
-                User CheckEmail = userManager.GetUserByEmail(Email);
-                if (CheckEmail == null)
-                {
-                    ViewBag.Error = "Email không tồn tại trong hệ thống !";
-                    return ForgotPassword();
-                }
-                else
-                {
-                    EmailSender emailSender = new EmailSender();
-                    string NewOtp = emailSender.GenerateRandomNumber();
-                    String HtmlContent = "<h2>Xin chào " + Email + " ,</h2>" +
-                            "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
-                            "Hãy sử dụng mã này Để xác nhận và đổi mật khẩu của bạn.<br><br>" +
-                            "Mã xác nhận : <span style='font - weight: bold; '>" + NewOtp + "</span><br><br>" +
-                            "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
-
-                    string FromEmail = "quizpracticeg6@gmail.com";
-                    string GetPassword = "mrxexghqvwyekhqk";
-
-                    emailSender.SendEmail(FromEmail, GetPassword, Email, "Đổi Mật Khẩu", HtmlContent);
-                    userManager.UpdateOtp(Email, NewOtp);
-                    HttpContext.Session.SetString("EmailFG", Email);
-
-                    return RedirectToAction("Verify", "User");
-                }
+                ViewBag.Error = "Email không tồn tại trong hệ thống !";
+                return ForgotPassword();
             }
-            return View();
+            else
+            {
+                EmailSender emailSender = new EmailSender();
+                string NewOtp = emailSender.GenerateRandomNumber();
+                String HtmlContent = "<h2>Xin chào " + Email + " ,</h2>" +
+                        "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
+                        "Hãy sử dụng mã này Để xác nhận và đổi mật khẩu của bạn.<br><br>" +
+                        "Mã xác nhận : <span style='font - weight: bold; '>" + NewOtp + "</span><br><br>" +
+                        "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
+
+                string FromEmail = "quizpracticeg6@gmail.com";
+                string GetPassword = "mrxexghqvwyekhqk";
+
+                emailSender.SendEmail(FromEmail, GetPassword, Email, "Đổi Mật Khẩu", HtmlContent);
+                userManager.UpdateOtp(Email, NewOtp);
+                HttpContext.Session.SetString("EmailFG", Email);
+
+                return RedirectToAction("Verify", "User");
+            }
+
         }
 
         //Change Password Screen
@@ -258,22 +248,20 @@ namespace FootballNews.Controllers
         public IActionResult ChangePassword(string Email, string Password, string ConfirmPassword)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            if (!Password.Equals(ConfirmPassword))
             {
-                if (!Password.Equals(ConfirmPassword))
-                {
-                    ViewBag.Error = "Mật khẩu không khớp với nhau !";
-                    return ChangePassword();
-                }
-                else
-                {
-                    userManager.UpdatePassword(Email, Password);
-                    userManager.UpdateOtp(Email, "");
-                    HttpContext.Session.Remove("EmailFG");
-                    return RedirectToAction("Login", "User");
-                }
+                ViewBag.Error = "Mật khẩu không khớp với nhau !";
+                return ChangePassword();
             }
-            return View();
+            else
+            {
+                userManager.UpdatePassword(Email, Password);
+                userManager.UpdateOtp(Email, "");
+                HttpContext.Session.Remove("EmailFG");
+                return RedirectToAction("Login", "User");
+            }
+
         }
 
         //User Profile Screen
@@ -288,34 +276,23 @@ namespace FootballNews.Controllers
         public IActionResult UserProfile(string Username, string Avatar)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
+
+            if (userManager.GetUserByName(Username) == null || Username.Equals(CurrentUser.UserName))
             {
-                if (HttpContext.Session.GetString("CurrentUser") == null)
-                {
-                    return Login();
-                }
-                else
-                {
-                    User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
-
-                    if (userManager.GetUserByName(Username) == null || Username.Equals(CurrentUser.UserName))
-                    {
-                        userManager.UpdateUserProfile(Avatar, Username, CurrentUser.Email);
-                        User ChangeUser = userManager.CheckLogin(Username, CurrentUser.Password);
-                        HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(ChangeUser));
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ViewBag.Error = "Tên người dùng đã tồn tại !";
-                        return UserProfile();
-                    }
-
-                }
+                userManager.UpdateUserProfile(Avatar, Username, CurrentUser.Email);
+                User ChangeUser = userManager.CheckLogin(Username, CurrentUser.Password);
+                HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(ChangeUser));
+                return RedirectToAction("Index", "Home");
             }
-            return View();
-        }
+            else
+            {
+                ViewBag.Error = "Tên người dùng đã tồn tại !";
+                return UserProfile();
+            }
 
+        }
 
         //Change New Password Screen
         [HttpGet]
@@ -329,34 +306,31 @@ namespace FootballNews.Controllers
         public IActionResult ChangeNewPassword(string OldPassword, string NewPassword, string ConfirmPassword)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
+
+            if (!OldPassword.Equals(CurrentUser.Password))
             {
-                User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
-
-                if (!OldPassword.Equals(CurrentUser.Password))
-                {
-                    ViewBag.Error1 = "Mật khẩu cũ không chính xác !";
-                }
-
-                if (!NewPassword.Equals(ConfirmPassword))
-                {
-                    ViewBag.Error2 = "Mật khẩu mới và xác nhận không khớp với nhau !";
-                }
-
-                if (!OldPassword.Equals(CurrentUser.Password) || !NewPassword.Equals(ConfirmPassword))
-                {
-                    return ChangeNewPassword();
-                }
-                else
-                {
-                    userManager.UpdatePassword(CurrentUser.Email, NewPassword);
-                    User ChangeUser = userManager.CheckLogin(CurrentUser.UserName, NewPassword);
-                    HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(ChangeUser));
-                    return RedirectToAction("Index", "Home");
-                }
-
+                ViewBag.Error1 = "Mật khẩu cũ không chính xác !";
             }
-            return View();
+
+            if (!NewPassword.Equals(ConfirmPassword))
+            {
+                ViewBag.Error2 = "Mật khẩu mới và xác nhận không khớp với nhau !";
+            }
+
+            if (!OldPassword.Equals(CurrentUser.Password) || !NewPassword.Equals(ConfirmPassword))
+            {
+                return ChangeNewPassword();
+            }
+            else
+            {
+                userManager.UpdatePassword(CurrentUser.Email, NewPassword);
+                User ChangeUser = userManager.CheckLogin(CurrentUser.UserName, NewPassword);
+                HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(ChangeUser));
+                return RedirectToAction("Index", "Home");
+            }
         }
+
     }
 }

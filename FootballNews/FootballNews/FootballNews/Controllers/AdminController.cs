@@ -20,7 +20,8 @@ namespace FootballNews.Controllers
             if (CurrentUser.RoleId != 1)
             {
                 return Error();
-            } else
+            }
+            else
             {
                 UserManager userManager = new UserManager();
                 RoleManager roleManager = new RoleManager();
@@ -38,50 +39,65 @@ namespace FootballNews.Controllers
 
                 return View("Views/Admin/ManageUser.cshtml");
             }
-            
+
         }
 
         public IActionResult AddUser(string Avatar, string Username, string Email, string Password, int Role)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
-            {
-                if (userManager.GetUserByName(Username) != null)
-                {
-                    ViewBag.Error1 = "Tên người dùng đã được sử dụng !";
-                }
-                if (userManager.GetUserByEmail(Email) != null)
-                {
-                    ViewBag.Error2 = "Địa chỉ email đã được sử dụng !";
-                }
-                if (userManager.GetUserByName(Username) != null || userManager.GetUserByEmail(Email) != null)
-                {
-                    return ManageUser();
-                }
-                else
-                {
-                    userManager.AddUser(Avatar, Username, Email, Password, Role);
-                    return RedirectToAction("ManageUser", "Admin");
-                }
 
+            if (userManager.GetUserByName(Username) != null)
+            {
+                ViewBag.Error1 = "Tên người dùng đã được sử dụng !";
             }
-            return View();
+            if (userManager.GetUserByEmail(Email) != null)
+            {
+                ViewBag.Error2 = "Địa chỉ email đã được sử dụng !";
+            }
+            if (userManager.GetUserByName(Username) != null || userManager.GetUserByEmail(Email) != null)
+            {
+                return ManageUser();
+            }
+            else
+            {
+                userManager.AddUser(Avatar, Username, Email, Password, Role);
+                return RedirectToAction("ManageUser", "Admin");
+            }
+
         }
 
         public IActionResult DeleteUser(int UserId)
         {
             UserManager userManager = new UserManager();
-            if (ModelState.IsValid)
+
+            User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
+            if (CurrentUser.RoleId != 1)
+            {
+                return Error();
+            }
+            else
             {
                 userManager.DeleteUser(UserId);
-                return ManageUser();
+                return RedirectToAction("ManageUser", "Admin");
             }
-            return View();
+
         }
 
-        public IActionResult SetRoleUser()
+        public IActionResult SetRoleUser(int SetRole, int UserId)
         {
-            return View();
+            UserManager userManager = new UserManager();
+
+            User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
+            if (CurrentUser.RoleId != 1)
+            {
+                return Error();
+            }
+            else
+            {
+                userManager.SetRole(SetRole, UserId);
+                return RedirectToAction("ManageUser", "Admin");
+            }
+
         }
 
         public IActionResult ManageNews()
@@ -95,6 +111,11 @@ namespace FootballNews.Controllers
         }
 
         public IActionResult DeleteNews()
+        {
+            return View();
+        }
+
+        public IActionResult UpdateNews()
         {
             return View();
         }
