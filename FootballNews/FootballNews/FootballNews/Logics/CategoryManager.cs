@@ -35,5 +35,12 @@ namespace FootballNews.Logics
             }
         }
 
+        public dynamic GetAllCategories()
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Categories.ToList();
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FootballNews.Controllers
 {
@@ -114,7 +115,8 @@ namespace FootballNews.Controllers
                 CategoryManager categoryManager = new CategoryManager();
                 int PageSize = 10;
                 ViewBag.AllNews = newsManager.GetAllNewsByCategoryId(CategoryId, (Page - 1) * PageSize + 1, PageSize);
-
+                ViewBag.AllUsers = userManager.GetAllUsers();
+                ViewBag.AllCategories = categoryManager.GetAllCategories();
                 int TotalNews = newsManager.GetNumberOfNews(CategoryId);
                 int TotalPage = TotalNews / PageSize;
 
@@ -134,15 +136,28 @@ namespace FootballNews.Controllers
 
         public IActionResult AddNews()
         {
+
             return View();
         }
 
-        public IActionResult DeleteNews()
+        public IActionResult DeleteNews(int NewsId)
         {
-            return View();
+            NewsManager newsManager = new NewsManager();
+            ImageManager imageManager = new ImageManager();
+            ContentManager contentManager = new ContentManager();
+            CommentManager commentManager = new CommentManager();
+
+            var context = new FootballNewsContext();
+            contentManager.DeleteContentById(NewsId);
+            imageManager.DeleteImageById(NewsId);
+            newsManager.DeleteNewsById(NewsId);
+            commentManager.DeleteCommentByNewsId(NewsId);
+            
+            return RedirectToAction("ManageNews", "Admin");
         }
 
-        public IActionResult UpdateNews()
+        [HttpGet]
+        public IActionResult UpdateNews(int NewsId)
         {
             return View();
         }

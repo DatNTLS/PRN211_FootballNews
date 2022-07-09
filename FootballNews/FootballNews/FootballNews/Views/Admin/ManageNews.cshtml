@@ -28,7 +28,7 @@
         </div>
         <div class="sidebar-brand" style="float: right; margin: 0px; width: 80%; padding-left: 0;">
             <div class="user-wrapper">
-                 @if (@CurrentUser.Avatar == null)
+                @if (@CurrentUser.Avatar == null)
                 {
                     <img src="~/images/avatar/2120b058cb9946e36306778243eadae5.jpg"
                      width="40px" height="40px" alt="Error" />
@@ -75,10 +75,12 @@
         <main>
             <div class="container-fluid">
                 <h2 style="float: left; margin: 50px 0;" style="margin-top: 80px;">News Management</h2>
-                <a href="/Admin/AddNews"><button style="float: right; margin: 60px 0;" type="button" class="btn btn-success" data-toggle="modal"
-                        data-target="#exampleModal">
-                    Add News
-                </button></a>
+                <a href="/Admin/AddNews">
+                    <button style="float: right; margin: 60px 0;" type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Add News
+                    </button>
+                </a>
 
                 <table class="table table-bordered">
                     <thead style="text-align: center;">
@@ -95,57 +97,71 @@
                     </thead>
                     <tbody style="text-align: center;">
                         @foreach (News n in ViewBag.AllNews)
-                       {
-                           <tr>
-                            <td>@n.NewsId</td>
-                            <td>@n.Title</td>
-                            <td>FA2021</td>
-                            <td><img src="~/images/news/@n.Thumbnail" alt="" width="100px" height="100px"></td>
-                            <td>Bóng đá anh</td>
-                            <td>@n.DatePublished</td>
-                            <td><a href="/Admin/DeleteNews?NewsId=@n.NewsId" class="btn btn-danger">Delete</a></td>
-                            <td><a href="/Admin/UpdateNews?NewsId=@n.NewsId" class="btn btn-primary">Update</a></td>
-                        </tr>
-                       }
+                        {
+                            <tr>
+                                <td>@n.NewsId</td>
+                                <td>@n.Title</td>
+                                @foreach (User u in ViewBag.AllUsers)
+                                {
+                                    if (u.UserId == n.AuthorId)
+                                    {
+                                        <td>@u.UserName</td>
+
+                                    }
+                                }
+                                <td><img src="~/images/news/@n.Thumbnail" alt="" width="100px" height="100px"></td>
+                                @foreach (Category c in  ViewBag.AllCategories)
+                               {
+                                   if (c.CategoryId == n.CategoryId)
+                                    {
+                                        <td>@c.CategoryName</td>
+
+                                    }
+                               }
+                                <td>@n.DatePublished</td>
+                                <td><a href="/Admin/DeleteNews?NewsId=@n.NewsId" class="btn btn-danger">Delete</a></td>
+                                <td><a href="/Admin/UpdateNews?NewsId=@n.NewsId" class="btn btn-primary">Update</a></td>
+                            </tr>
+                        }
 
                     </tbody>
                 </table>
-                 <div class="pagination">
-                        @if (Convert.ToInt32(ViewData["CurrentPage"]) > 1)
-                        {
-                            <a href="/Admin/ManageNews/@ViewData["CurrentCategory"]/@ViewData["CurrentPage"]-1">&laquo;</a>
-                        }
-                        @for (int i = 1; i <= (int)ViewData["TotalPage"]; i++)
-                        {
-                            <a class='@((int)ViewData["CurrentPage"]==i?"active":"")'
-                           href="/Admin/ManageNews/@ViewData["CurrentCategory"]/@i">@i</a>
-                        }
-                        @if (Convert.ToInt32(ViewData["TotalPage"]) != Convert.ToInt32(ViewData["CurrentPage"]))
-                        {
-                            <a href="/Admin/ManageNews/@ViewData["CurrentCategory"]/@ViewData["CurrentPage"]+1">&raquo;</a>
-                        }
-                    </div>
-                    <style>
-                        .pagination {
-                            display: inline-block;
+                <div class="pagination">
+                    @if (Convert.ToInt32(ViewData["CurrentPage"]) > 1)
+                    {
+                        <a href="/Admin/ManageNews/@ViewData["CurrentCategory"]/@ViewData["CurrentPage"]-1">&laquo;</a>
+                    }
+                    @for (int i = 1; i <= (int)ViewData["TotalPage"]; i++)
+                    {
+                        <a class='@((int)ViewData["CurrentPage"]==i?"active":"")'
+                       href="/Admin/ManageNews/@ViewData["CurrentCategory"]/@i">@i</a>
+                    }
+                    @if (Convert.ToInt32(ViewData["TotalPage"]) != Convert.ToInt32(ViewData["CurrentPage"]))
+                    {
+                        <a href="/Admin/ManageNews/@ViewData["CurrentCategory"]/@ViewData["CurrentPage"]+1">&raquo;</a>
+                    }
+                </div>
+                <style>
+                    .pagination {
+                        display: inline-block;
+                    }
+
+                        .pagination a {
+                            color: black;
+                            float: left;
+                            padding: 8px 16px;
+                            text-decoration: none;
                         }
 
-                            .pagination a {
-                                color: black;
-                                float: left;
-                                padding: 8px 16px;
-                                text-decoration: none;
+                            .pagination a.active {
+                                background-color: #d8302f;
+                                color: white;
                             }
 
-                                .pagination a.active {
-                                    background-color: #d8302f;
-                                    color: white;
-                                }
-
-                                .pagination a:hover:not(.active) {
-                                    background-color: #ddd;
-                                }
-                    </style>
+                            .pagination a:hover:not(.active) {
+                                background-color: #ddd;
+                            }
+                </style>
             </div>
         </main>
     </div>

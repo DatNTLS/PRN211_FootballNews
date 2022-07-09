@@ -15,5 +15,18 @@ namespace FootballNews.Logics
                 return context.Images.Where(x => x.NewsId == NewsId).ToList();
             }
         }
+
+        public void DeleteImageById(int NewsId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                List<Image> im = context.Images.Where(x => x.NewsId == NewsId).ToList();
+                foreach (Image i in im)
+                {
+                    context.Remove(i);
+                    context.SaveChanges();
+                }
+            }
+        }
     }
 }

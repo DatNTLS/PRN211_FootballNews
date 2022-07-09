@@ -7,11 +7,24 @@ namespace FootballNews.Logics
 {
     public class ContentManager
     {
-        internal List<Content> GetAllContents()
+        public List<Content> GetAllContents()
         {
             using (var context = new FootballNewsContext())
             {
                 return context.Contents.ToList();
+            }
+        }
+
+        public void DeleteContentById(int NewsId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                List<Content> ct = context.Contents.Where(x => x.Image.NewsId == NewsId).ToList();
+                foreach (Content c in ct)
+                {
+                    context.Remove(c);
+                    context.SaveChanges();
+                }
             }
         }
     }

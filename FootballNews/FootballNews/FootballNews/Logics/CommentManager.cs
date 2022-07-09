@@ -41,5 +41,21 @@ namespace FootballNews.Logics
                 context.SaveChanges();
             }
         }
+
+        public void DeleteCommentByNewsId(int NewsId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                List<Comment> cm = context.Comments.Where(x => x.NewsId == NewsId).ToList();
+                if (cm.Count >= 1)
+                {
+                    foreach (Comment c in cm)
+                    {
+                        context.Remove(c);
+                        context.SaveChanges();
+                    }
+                }
+            }
+        }
     }
 }

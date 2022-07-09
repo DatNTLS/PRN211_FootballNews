@@ -70,6 +70,14 @@ namespace FootballNews.Logics
 
         }
 
-        
+        public void DeleteNewsById(int NewsId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                News n = context.News.Where(x => x.NewsId == NewsId).FirstOrDefault();
+                context.Remove(n);
+                context.SaveChanges();
+            }
+        }
     }
 }
