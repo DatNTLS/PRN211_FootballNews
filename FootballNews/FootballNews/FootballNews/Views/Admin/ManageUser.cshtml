@@ -116,7 +116,7 @@
 
             <div class="container-fluid">
                 <h2 style="float: left; margin: 50px 0;" style="margin-top: 80px;">User Management</h2>
-                <button style="float: right; margin: 60px 0;" type="button" class="btn btn-success" data-toggle="modal"
+                <button style="float: right; margin: 60px 0;" type="button" class="btn btn-success btn-add" data-toggle="modal"
                         data-target="#exampleModal">
                     Add New User
                 </button>
@@ -225,7 +225,7 @@
                                     color: black;
                                 }
                         </style>
-
+                        <input type="hidden" id="Error" value="@ViewData["Error"]" />
                         <div class="form-group">
                             <label for="exampleInputAvatar1">Avatar</label>
                             <input type="file" name="Avatar" class="form-control" id="exampleInputAvatar1" placeholder="Enter Avatar" />
@@ -240,12 +240,13 @@
                         <div class="form-group">
                             <label for="exampleInputName1">User Name</label>
                             <input type="text" name="Username" class="form-control" id="exampleInputName1" placeholder="Enter User Name" required />
+
                         </div>
-                        @if (ViewBag.Error1 != null)
+                        @if (ViewBag.Error2 != null)
                         {
                             <div class="alert">
                                 <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
-                                @ViewBag.Error1
+                                @ViewBag.Error2
                             </div>
                         }
                         <div class="form-group">
@@ -283,11 +284,7 @@
     </div>
 
     <!--Script for modal active-->
-    <script>
-        $("#myModal").on("shown.bs.modal", function() {
-            $("#myInput").trigger("focus");
-        });
-    </script>
+
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -298,6 +295,19 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            var Error = $("#Error").val();
+            if (Error == false) {
+                $("#exampleModal").modal('show');
+            }
+        });
+
+        $(".btn-add").click(function(){
+            $("#exampleModal").modal('show');
+        });
+        
+    </script>
 </body>
 
 
