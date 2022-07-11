@@ -57,7 +57,6 @@ namespace FootballNews.Controllers
             }
             if (userManager.GetUserByName(Username) != null || userManager.GetUserByEmail(Email) != null)
             {
-                ViewData["Error"] = true;
                 return ManageUser();
             }
             else
@@ -183,14 +182,16 @@ namespace FootballNews.Controllers
         [HttpGet]
         public IActionResult UpdateNews(int NewsId)
         {
-
+            CategoryManager categoryManager = new CategoryManager();
+            NewsManager newsManager = new NewsManager();
             return View("Views/Admin/UpdateNews");
         }
 
         [HttpPost]
         public IActionResult UpdateNews(int NewsId, string Title, string ShortDescription, string Thumbnail, int Category, string[] Image, string[] Content)
         {
-            return View();
+
+            return RedirectToAction("ManageNews", "Admin");
         }
 
     }
