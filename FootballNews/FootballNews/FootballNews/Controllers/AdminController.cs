@@ -102,7 +102,7 @@ namespace FootballNews.Controllers
 
         }
 
-        public IActionResult ManageNews(int CategoryId,int Page)
+        public IActionResult ManageNews(int CategoryId, int Page)
         {
             User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
             if (CurrentUser.RoleId != 1)
@@ -162,7 +162,7 @@ namespace FootballNews.Controllers
                 contentManager.AddContents(image.ImageId, Content[i]);
             }
 
-            return RedirectToAction("ManageNews","Admin");
+            return RedirectToAction("ManageNews", "Admin");
         }
 
         public IActionResult DeleteNews(int NewsId)
@@ -176,12 +176,19 @@ namespace FootballNews.Controllers
             contentManager.DeleteContentsById(NewsId);
             imageManager.DeleteImagesById(NewsId);
             newsManager.DeleteNewsById(NewsId);
-            
+
             return RedirectToAction("ManageNews", "Admin");
         }
 
         [HttpGet]
         public IActionResult UpdateNews(int NewsId)
+        {
+
+            return View("Views/Admin/UpdateNews");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateNews(int NewsId, string Title, string ShortDescription, string Thumbnail, int Category, string[] Image, string[] Content)
         {
             return View();
         }
