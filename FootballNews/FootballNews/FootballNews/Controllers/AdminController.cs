@@ -217,13 +217,11 @@ namespace FootballNews.Controllers
             ContentManager contentManager = new ContentManager();
 
             newsManager.UpdateNews(NewsId, Title, ShortDescription, Thumbnail, Category);
+
             for (int i = 0; i < Image.Length; i++)
             {
                 imageManager.UpdateImages(NewsId, Image[i]);
-                for (int j = 0; j < ImageId.Length; j++)
-                {
-                    contentManager.UpdateContents(ImageId[i], Content[j]);
-                }
+                contentManager.UpdateContents(ImageId[i], Content[i]);
             }
 
             return RedirectToAction("ManageNews", "Admin");
