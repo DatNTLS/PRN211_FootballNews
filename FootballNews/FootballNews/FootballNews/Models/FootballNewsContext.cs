@@ -135,7 +135,7 @@ namespace FootballNews.Models
 
                 entity.Property(e => e.Email).HasMaxLength(256);
 
-                entity.Property(e => e.Otp).HasMaxLength(256);
+                entity.Property(e => e.Code).HasMaxLength(256);
 
                 entity.Property(e => e.Password).HasMaxLength(256);
 

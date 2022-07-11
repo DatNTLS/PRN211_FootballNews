@@ -39,7 +39,7 @@ namespace FootballNews.Logics
             }
         }
 
-        public void InsertUser(string Username, string Email, string Password, string Otp)
+        public void InsertUser(string Username, string Email, string Password, string Code)
         {
             using (var context = new FootballNewsContext())
             {
@@ -51,7 +51,7 @@ namespace FootballNews.Logics
                     Avatar = ""
                     ,
                     RoleId = 3,
-                    Otp = Otp,
+                    Code = Code,
                     Status = false
                 };
                 context.Add(user);
@@ -78,7 +78,7 @@ namespace FootballNews.Logics
                     Password = Password,
                     Avatar = Avatar,
                     RoleId = RoleId,
-                    Otp = null,
+                    Code = null,
                     Status = true
                 };
                 context.Add(u);
@@ -114,11 +114,11 @@ namespace FootballNews.Logics
             }
         }
 
-        public User CheckOTP(string Email,string Otp)
+        public User CheckCode(string Email,string Code)
         {
             using (var context = new FootballNewsContext())
             {
-                return context.Users.Where(x => x.Email == Email && x.Otp == Otp).FirstOrDefault();
+                return context.Users.Where(x => x.Email == Email && x.Code == Code).FirstOrDefault();
             }
         }
 
@@ -133,12 +133,12 @@ namespace FootballNews.Logics
             }
         }
 
-        public void UpdateOtp(string Email, string Otp)
+        public void UpdateCode(string Email, string Code)
         {
             using (var context = new FootballNewsContext())
             {
                 User CurrentUser = context.Users.Where(x => x.Email == Email).FirstOrDefault();
-                CurrentUser.Otp = Otp;
+                CurrentUser.Code = Code;
                 context.SaveChanges();
             }
         }

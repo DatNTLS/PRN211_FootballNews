@@ -98,14 +98,14 @@ namespace FootballNews.Controllers
             else
             {
                 EmailSender emailSender = new EmailSender();
-                String Otp = emailSender.GenerateRandomNumber();
+                String Code = emailSender.GenerateRandomNumber();
 
-                userManager.InsertUser(Username, Email, Password, Otp);
+                userManager.InsertUser(Username, Email, Password, Code);
 
                 String HtmlContent = "<h2>Xin chào " + Email + " ,</h2>" +
                     "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
                     "Hãy sử dụng mã này Để xác nhận tài khoản.<br><br>" +
-                    "Mã xác nhận : <span style='font - weight: bold; '>" + Otp + "</span><br><br>" +
+                    "Mã xác nhận : <span style='font - weight: bold; '>" + Code + "</span><br><br>" +
                     "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
 
                 string FromEmail = "quizpracticeg6@gmail.com";
@@ -129,7 +129,7 @@ namespace FootballNews.Controllers
 
         //Verify Action
         [HttpPost]
-        public IActionResult Verify(string Otp)
+        public IActionResult Verify(string Code)
         {
             UserManager userManager = new UserManager();
 
@@ -138,8 +138,8 @@ namespace FootballNews.Controllers
 
             if (CurrentEmail != null)
             {
-                User CheckOTP = userManager.CheckOTP(CurrentEmail, Otp);
-                if (CheckOTP == null)
+                User CheckCode = userManager.CheckCode(CurrentEmail, Code);
+                if (CheckCode == null)
                 {
                     ViewBag.Error = "Mã xác nhận không chính xác !";
                     return Verify();
@@ -147,7 +147,7 @@ namespace FootballNews.Controllers
                 else
                 {
                     userManager.UpdateStatus(CurrentEmail, true);
-                    userManager.UpdateOtp(CurrentEmail, null);
+                    userManager.UpdateCode(CurrentEmail, null);
                     HttpContext.Session.Remove("CurrentEmail");
                     return RedirectToAction("Login", "User");
                 }
@@ -155,8 +155,8 @@ namespace FootballNews.Controllers
 
             if (EmailFG != null)
             {
-                User CheckOTP = userManager.CheckOTP(EmailFG, Otp);
-                if (CheckOTP == null)
+                User CheckCode = userManager.CheckCode(EmailFG, Code);
+                if (CheckCode == null)
                 {
                     ViewBag.Error = "Mã xác nhận không chính xác !";
                     return Verify();
@@ -171,25 +171,25 @@ namespace FootballNews.Controllers
 
         }
 
-        //Resend OTP Action
+        //Resend Code Action
         public IActionResult Resend()
         {
             UserManager userManager = new UserManager();
 
             EmailSender emailSender = new EmailSender();
             string CurrentEmail = HttpContext.Session.GetString("CurrentEmail");
-            string NewOtp = emailSender.GenerateRandomNumber();
+            string NewCode = emailSender.GenerateRandomNumber();
             String HtmlContent = "<h2>Xin chào " + CurrentEmail + " ,</h2>" +
                     "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
                     "Hãy sử dụng mã này Để xác nhận tài khoản.<br><br>" +
-                    "Mã xác nhận : <span style='font - weight: bold; '>" + NewOtp + "</span><br><br>" +
+                    "Mã xác nhận : <span style='font - weight: bold; '>" + NewCode + "</span><br><br>" +
                     "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
 
             string FromEmail = "quizpracticeg6@gmail.com";
             string GetPassword = "mrxexghqvwyekhqk";
 
             emailSender.SendEmail(FromEmail, GetPassword, CurrentEmail, "Xác Nhận Tài Khoản", HtmlContent);
-            userManager.UpdateOtp(CurrentEmail, NewOtp);
+            userManager.UpdateCode(CurrentEmail, NewCode);
 
             return RedirectToAction("Verify", "User");
 
@@ -217,18 +217,18 @@ namespace FootballNews.Controllers
             else
             {
                 EmailSender emailSender = new EmailSender();
-                string NewOtp = emailSender.GenerateRandomNumber();
+                string NewCode = emailSender.GenerateRandomNumber();
                 String HtmlContent = "<h2>Xin chào " + Email + " ,</h2>" +
                         "<p>Chúng tôi đã gửi 1 đoạn mã đến Email của bạn.<br><br>" +
                         "Hãy sử dụng mã này Để xác nhận và đổi mật khẩu của bạn.<br><br>" +
-                        "Mã xác nhận : <span style='font - weight: bold; '>" + NewOtp + "</span><br><br>" +
+                        "Mã xác nhận : <span style='font - weight: bold; '>" + NewCode + "</span><br><br>" +
                         "Vui lòng không chia sẻ mã này với bất kì ai.</p>";
 
                 string FromEmail = "quizpracticeg6@gmail.com";
                 string GetPassword = "mrxexghqvwyekhqk";
 
                 emailSender.SendEmail(FromEmail, GetPassword, Email, "Đổi Mật Khẩu", HtmlContent);
-                userManager.UpdateOtp(Email, NewOtp);
+                userManager.UpdateCode(Email, NewCode);
                 HttpContext.Session.SetString("EmailFG", Email);
 
                 return RedirectToAction("Verify", "User");
@@ -257,7 +257,7 @@ namespace FootballNews.Controllers
             else
             {
                 userManager.UpdatePassword(Email, Password);
-                userManager.UpdateOtp(Email, "");
+                userManager.UpdateCode(Email, "");
                 HttpContext.Session.Remove("EmailFG");
                 return RedirectToAction("Login", "User");
             }

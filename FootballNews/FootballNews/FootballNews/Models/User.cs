@@ -19,7 +19,7 @@ namespace FootballNews.Models
         public string Password { get; set; }
         public string Avatar { get; set; }
         public int? RoleId { get; set; }
-        public string Otp { get; set; }
+        public string Code { get; set; }
         public bool? Status { get; set; }
 
         public virtual Role Role { get; set; }
