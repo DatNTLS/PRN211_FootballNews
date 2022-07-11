@@ -57,7 +57,7 @@ namespace FootballNews.Controllers
             }
             if (userManager.GetUserByName(Username) != null || userManager.GetUserByEmail(Email) != null)
             {
-                ViewData["Error"] = false;
+                ViewData["Error"] = true;
                 return ManageUser();
             }
             else

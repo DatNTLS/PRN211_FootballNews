@@ -84,13 +84,13 @@
         <div class="container">
             <form action="addNews" method="POST">
                 <label for="">Title</label>
-                <input type="text" name="Title" placeholder="Enter title.." required>
+                <input value="" type="text" name="Title" placeholder="Enter title.." required>
 
                 <label for="">Short Description</label>
-                <textarea name="ShortDescription" placeholder="Write something.." style="height:100px" required></textarea>
+                <textarea value="" name="ShortDescription" placeholder="Write something.." style="height:100px" required></textarea>
 
                 <label for="">Thumbnail</label><br><br>
-                <input type="file" name="Thumbnail" placeholder="Enter url img.." required><br><br>
+                <input value="" type="file" name="Thumbnail" placeholder="Enter url img.." required><br><br>
 
                 <label for="">Type News</label>
                 <select name="Category">
@@ -103,20 +103,20 @@
                 <input id="addMore" type="button" value="Add More Image/Content" style="background-color: #5cb85c;"><br><br>
 
                 <label for="">Image</label><br><br>
-                <input type="file" name="Image" placeholder="Enter url img.." required><br><br>
+                <input value="" type="file" name="Image" placeholder="Enter url img.." required><br><br>
 
                 <label for="">Content</label>
-                <textarea id="below" name="Content" placeholder="Write something.." style="height:100px" required></textarea>
+                <textarea value="" id="below" name="Content" placeholder="Write something.." style="height:100px" required></textarea>
 
                 @if (CurrentUser.RoleId == 1)
                 {
                     <a href="/Admin/ManageNews"><input type="button" value="Cancel" style="float: left;"></a>
-                    <input type="submit" value="Add News" style="float: right;">
+                    <input type="submit" value="Update News" style="float: right;">
                 }
                  @if (CurrentUser.RoleId == 2)
                 {
                     <a href="/Author/MyNews"><input type="button" value="Cancel" style="float: left;"></a>
-                    <input type="submit" value="Add News" style="float: right;">
+                    <input type="submit" value="Update News" style="float: right;">
                 }
 
                 <div style="clear: both;">
