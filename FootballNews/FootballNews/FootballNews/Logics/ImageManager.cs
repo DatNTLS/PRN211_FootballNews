@@ -50,5 +50,15 @@ namespace FootballNews.Logics
                 return context.Images.Take(1).OrderByDescending(x => x.ImageId).FirstOrDefault();
             }
         }
+
+        public void UpdateImages(int NewsId, string ImageUrl)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                Image i = context.Images.Where(x => x.NewsId == NewsId).FirstOrDefault();
+                i.ImageUrl = ImageUrl;
+                context.SaveChanges();
+            }
+        }
     }
 }

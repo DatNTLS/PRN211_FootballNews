@@ -3,6 +3,7 @@ using FootballNews.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -184,12 +185,46 @@ namespace FootballNews.Controllers
         {
             CategoryManager categoryManager = new CategoryManager();
             NewsManager newsManager = new NewsManager();
-            return View("Views/Admin/UpdateNews");
+            ImageManager imageManager = new ImageManager();
+            ContentManager contentManager = new ContentManager();
+
+            List<Category> categories = categoryManager.GetAllCategories();
+            ViewBag.AllCategories = categories;
+
+            News news = newsManager.GetNewsById(NewsId);
+            ViewData["NewsId"] = news.NewsId;
+            ViewData["Title"] = news.Title;
+            ViewData["ShortDescription"] = news.ShortDescription;
+            ViewData["Thumbnail"] = news.Thumbnail;
+            ViewData["CategoryId"] = news.CategoryId;
+            ViewData["DatePublished"] = news.DatePublished;
+
+            List<Image> images = imageManager.GetAllImagesByNewsId(NewsId);
+            ViewBag.GetImages = images;
+
+            List<Content> contents = contentManager.GetAllContents();
+            ViewBag.GetContents = contents;
+
+            return View("Views/Admin/UpdateNews.cshtml");
         }
 
         [HttpPost]
-        public IActionResult UpdateNews(int NewsId, string Title, string ShortDescription, string Thumbnail, int Category, string[] Image, string[] Content)
+        public IActionResult UpdateNews(int NewsId, string Title, string ShortDescription, string Thumbnail,
+            int Category, string[] Image, int[] ImageId, string[] Content)
         {
+            NewsManager newsManager = new NewsManager();
+            ImageManager imageManager = new ImageManager();
+            ContentManager contentManager = new ContentManager();
+
+            newsManager.UpdateNews(NewsId, Title, ShortDescription, Thumbnail, Category);
+            for (int i = 0; i < Image.Length; i++)
+            {
+                imageManager.UpdateImages(NewsId, Image[i]);
+                for (int j = 0; j < ImageId.Length; j++)
+                {
+                    contentManager.UpdateContents(ImageId[i], Content[j]);
+                }
+            }
 
             return RedirectToAction("ManageNews", "Admin");
         }

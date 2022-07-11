@@ -79,35 +79,56 @@
         User CurrentUser = JsonConvert.DeserializeObject<User>(Context.Session.GetString("CurrentUser"));
     }
     <div class="form-add">
-        <h3>Add News</h3>
+        <h3>Update News</h3>
 
         <div class="container">
-            <form action="addNews" method="POST">
+            <form action="updateNews" method="POST">
+                <label for="">NewsId</label>
+                <input value="@ViewData["NewsId"]" type="text" name="NewsId" placeholder="Enter id.." readonly>
+
                 <label for="">Title</label>
-                <input value="" type="text" name="Title" placeholder="Enter title.." required>
+                <input value="@ViewData["Title"]" type="text" name="Title" placeholder="Enter title.." required>
 
                 <label for="">Short Description</label>
-                <textarea value="" name="ShortDescription" placeholder="Write something.." style="height:100px" required></textarea>
+                <textarea name="ShortDescription" placeholder="Write something.." style="height:100px" required>@ViewData["ShortDescription"]</textarea>
 
                 <label for="">Thumbnail</label><br><br>
-                <input value="" type="file" name="Thumbnail" placeholder="Enter url img.." required><br><br>
-
+                <img src="~/images/news/@ViewData["Thumbnail"]" alt="" width="200px" height="100px"><br>
+                <input value="@ViewData["Thumbnail"]" type="file" name="Thumbnail" placeholder="Enter url img.." required><br><br>
+                
                 <label for="">Type News</label>
                 <select name="Category">
                     @foreach (Category c in ViewBag.AllCategories)
                    {
-                       <option value="@c.CategoryId">@c.CategoryName</option>
+                       <option selected="@((int)ViewData["CategoryId"]==c.CategoryId?"selected":"")" value="@c.CategoryId">@c.CategoryName</option>
                    }
                 </select>
 
-                <input id="addMore" type="button" value="Add More Image/Content" style="background-color: #5cb85c;"><br><br>
+                @*<label for="">Date Published</label>
+                <input value="@ViewData["DatePublished"]" type="datetime-local" name="DatePublished" placeholder="Enter date published.." required><br><br>*@
 
-                <label for="">Image</label><br><br>
-                <input value="" type="file" name="Image" placeholder="Enter url img.." required><br><br>
+                @foreach (Image i in ViewBag.GetImages)
+               {
+                    <label for="">ImageId</label>
+                    <input value="@i.ImageId" type="text" name="ImageId" placeholder="Enter id.." readonly>
 
-                <label for="">Content</label>
-                <textarea value="" id="below" name="Content" placeholder="Write something.." style="height:100px" required></textarea>
+                    <label for="">Image</label><br><br>
+                    <img src="~/images/news/@i.ImageUrl" alt="" width="200px" height="100px"><br>
+                    <input value="@i.ImageUrl" type="file" name="Image" placeholder="Enter url img.." required><br><br>
 
+                    @foreach (Content c in ViewBag.GetContents)
+                   {
+                       if (i.ImageId == c.ImageId)
+                        {
+                             <label for="">ContentId</label>
+                            <input value="@c.ContentId" type="text" name="ContentId" placeholder="Enter id.." readonly>
+
+                            <label for="">Content</label>
+                            <textarea id="below" name="Content" placeholder="Write something.." style="height:100px" required>@c.Content1</textarea>
+                        }
+                   }
+                }
+                
                 @if (CurrentUser.RoleId == 1)
                 {
                     <a href="/Admin/ManageNews"><input type="button" value="Cancel" style="float: left;"></a>
@@ -124,7 +145,6 @@
             </form>
         </div>
     </div>
-
 </body>
 </html>
 

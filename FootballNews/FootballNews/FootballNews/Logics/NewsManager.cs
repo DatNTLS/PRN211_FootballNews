@@ -103,5 +103,18 @@ namespace FootballNews.Logics
                 return context.News.Take(1).OrderByDescending(x => x.NewsId).FirstOrDefault();
             }
         }
+
+        public void UpdateNews(int NewsId, string Title, string ShortDescription, string Thumbnail, int Category)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                News news = context.News.Where(x => x.NewsId == NewsId).FirstOrDefault();
+                news.Title = Title;
+                news.ShortDescription = ShortDescription;
+                news.Thumbnail = Thumbnail;
+                news.CategoryId = Category;
+                context.SaveChanges();
+            }
+        }
     }
 }

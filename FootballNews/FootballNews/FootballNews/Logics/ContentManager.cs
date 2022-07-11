@@ -15,6 +15,14 @@ namespace FootballNews.Logics
             }
         }
 
+        public List<Content> GetAllContentsByNewsId(int NewsId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Contents.Where(x => x.Image.NewsId == NewsId).ToList();
+            }
+        }
+
         public void DeleteContentsById(int NewsId)
         {
             using (var context = new FootballNewsContext())
@@ -38,6 +46,16 @@ namespace FootballNews.Logics
                     ImageId = ImageId,
                 };
                 context.Add(c);
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateContents(int ImageId, string Content)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                Content c = context.Contents.Where(x => x.ImageId == ImageId).FirstOrDefault();
+                c.Content1 = Content;
                 context.SaveChanges();
             }
         }
