@@ -93,14 +93,15 @@
                 <textarea name="ShortDescription" placeholder="Write something.." style="height:100px" required>@ViewData["ShortDescription"]</textarea>
 
                 <label for="">Thumbnail</label><br><br>
-                <img src="~/images/news/@ViewData["Thumbnail"]" alt="" width="200px" height="100px"><br>
-                <input value="@ViewData["Thumbnail"]" type="file" name="Thumbnail" placeholder="Enter url img.." required><br><br>
+                @*<img src="~/images/news/@ViewData["Thumbnail"]" alt="" width="200px" height="100px">*@
+                <input value="@ViewData["Thumbnail"]" type="text" name="Thumbnail" placeholder="Enter url img.." readonly>
+                <input type="file" name="ThumbnailU" placeholder="Enter url img.."><br><br>
                 
                 <label for="">Type News</label>
                 <select name="Category">
                     @foreach (Category c in ViewBag.AllCategories)
                    {
-                       <option selected="@((int)ViewData["CategoryId"]==c.CategoryId?"selected":"")" value="@c.CategoryId">@c.CategoryName</option>
+                       <option selected='@((int)ViewData["CategoryId"]==c.CategoryId?"selected":null)' value="@c.CategoryId">@c.CategoryName</option>
                    }
                 </select>
 
@@ -109,19 +110,19 @@
 
                 @foreach (Image i in ViewBag.GetImages)
                {
-                    <label for="">ImageId</label>
-                    <input value="@i.ImageId" type="text" name="ImageId" placeholder="Enter id.." readonly>
+                    <input value="@i.ImageId" type="hidden" name="ImageId" placeholder="Enter id.." readonly>
 
                     <label for="">Image</label><br><br>
-                    <img src="~/images/news/@i.ImageUrl" alt="" width="200px" height="100px"><br>
-                    <input value="@i.ImageUrl" type="file" name="Image" placeholder="Enter url img.." required><br><br>
+                    <input value="@ViewData["Thumbnail"]" type="text" name="ImageUrl" placeholder="Enter url img.." readonly>
+                    @*<img src="~/images/news/@i.ImageUrl" alt="" width="200px" height="100px"><br>*@
+                    <input type="file" name="ImageUrlU" placeholder="Enter url img.."><br><br>
 
                     @foreach (Content c in ViewBag.GetContents)
                    {
                        if (i.ImageId == c.ImageId)
                         {
                             <label for="">Content</label>
-                            <textarea id="below" name="Content" placeholder="Write something.." style="height:100px" required>@c.Content1</textarea>
+                            <textarea name="Content" placeholder="Write something.." style="height:100px" required>@c.Content1</textarea>
                         }
                    }
                 }

@@ -59,5 +59,13 @@ namespace FootballNews.Logics
                 context.SaveChanges();
             }
         }
+
+        public List<Content> GetAllContentsByImageId(int ImageId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Contents.Where(x => x.ImageId == ImageId).ToList();
+            }
+        }
     }
 }

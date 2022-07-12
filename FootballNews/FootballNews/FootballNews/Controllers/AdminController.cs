@@ -209,21 +209,42 @@ namespace FootballNews.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateNews(int NewsId, string Title, string ShortDescription, string Thumbnail,
-            int Category, string[] Image, int[] ImageId, string[] Content)
+        public IActionResult UpdateNews(int NewsId, string Title, string ShortDescription, string Thumbnail, string ThumbnailU,
+            int Category, string[] ImageUrl, string[] ImageUrlU, int[] ImageId, string[] Content)
         {
             NewsManager newsManager = new NewsManager();
             ImageManager imageManager = new ImageManager();
             ContentManager contentManager = new ContentManager();
 
-            newsManager.UpdateNews(NewsId, Title, ShortDescription, Thumbnail, Category);
-
-            for (int i = 0; i < Image.Length; i++)
+            if (ThumbnailU != null)
             {
-                imageManager.UpdateImages(NewsId, Image[i]);
-                contentManager.UpdateContents(ImageId[i], Content[i]);
+                newsManager.UpdateNews(NewsId, Title, ShortDescription, ThumbnailU, Category);
+            } else
+            {
+                newsManager.UpdateNews(NewsId, Title, ShortDescription, Thumbnail, Category);
             }
 
+
+            for (int i = 0; i < ImageId.Length; i++)
+            {
+                if (ImageUrlU[i] != null)
+                {
+                    imageManager.UpdateImages(NewsId, ImageUrlU[i]);
+                }
+                else
+                {
+                    imageManager.UpdateImages(NewsId, ImageUrl[i]);
+                }
+
+                List<Content> AllContents = contentManager.GetAllContentsByImageId(ImageId[i]);
+                Content[] contents = new Content[AllContents.Count];
+                for (int j = 0; j < Content.Length; j++)
+                {
+                    contentManager.UpdateContents(ImageId[i], Content[j]);
+                }
+            }
+
+           
             return RedirectToAction("ManageNews", "Admin");
         }
 
