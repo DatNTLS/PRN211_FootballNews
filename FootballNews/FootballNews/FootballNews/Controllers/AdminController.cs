@@ -219,7 +219,8 @@ namespace FootballNews.Controllers
             if (ThumbnailU != null)
             {
                 newsManager.UpdateNews(NewsId, Title, ShortDescription, ThumbnailU, Category);
-            } else
+            }
+            else
             {
                 newsManager.UpdateNews(NewsId, Title, ShortDescription, Thumbnail, Category);
             }
@@ -236,15 +237,23 @@ namespace FootballNews.Controllers
                     imageManager.UpdateImages(NewsId, ImageUrl[i]);
                 }
 
-                List<Content> AllContents = contentManager.GetAllContentsByImageId(ImageId[i]);
-                Content[] contents = new Content[AllContents.Count];
-                for (int j = 0; j < Content.Length; j++)
+                //List<Content> AllContents = contentManager.GetAllContentsByImageId(ImageId[i]);
+                //Content[] contents = new Content[AllContents.Count];
+
+                //contentManager.UpdateContents(ImageId[i], Content[j]);
+                using (var context = new FootballNewsContext())
                 {
-                    contentManager.UpdateContents(ImageId[i], Content[j]);
+                    List<Content> contents = context.Contents.Where(x => x.ImageId == ImageId[i]).ToList();
+                    for (int j = 0; j < contents.Count; j++)
+                    {
+                        contents[j].Content1 = Content[j];
+                        context.SaveChanges();
+                    }
+
                 }
             }
 
-           
+
             return RedirectToAction("ManageNews", "Admin");
         }
 
