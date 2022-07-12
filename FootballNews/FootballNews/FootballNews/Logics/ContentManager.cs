@@ -50,22 +50,5 @@ namespace FootballNews.Logics
             }
         }
 
-        public void UpdateContents(int ImageId, string Content)
-        {
-            using (var context = new FootballNewsContext())
-            {
-                Content c = context.Contents.Where(x => x.ImageId == ImageId).FirstOrDefault();
-                c.Content1 = Content;
-                context.SaveChanges();
-            }
-        }
-
-        public List<Content> GetAllContentsByImageId(int ImageId)
-        {
-            using (var context = new FootballNewsContext())
-            {
-                return context.Contents.Where(x => x.ImageId == ImageId).ToList();
-            }
-        }
     }
 }

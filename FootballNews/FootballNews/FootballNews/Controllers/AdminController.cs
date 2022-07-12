@@ -237,10 +237,6 @@ namespace FootballNews.Controllers
                     imageManager.UpdateImages(NewsId, ImageUrl[i]);
                 }
 
-                //List<Content> AllContents = contentManager.GetAllContentsByImageId(ImageId[i]);
-                //Content[] contents = new Content[AllContents.Count];
-
-                //contentManager.UpdateContents(ImageId[i], Content[j]);
                 using (var context = new FootballNewsContext())
                 {
                     List<Content> contents = context.Contents.Where(x => x.ImageId == ImageId[i]).ToList();
@@ -249,10 +245,8 @@ namespace FootballNews.Controllers
                         contents[j].Content1 = Content[j];
                         context.SaveChanges();
                     }
-
                 }
             }
-
 
             return RedirectToAction("ManageNews", "Admin");
         }
