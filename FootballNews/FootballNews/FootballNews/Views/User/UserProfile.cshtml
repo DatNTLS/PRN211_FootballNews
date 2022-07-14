@@ -104,7 +104,8 @@
                         {
                             <img class="rounded-circle mt-5"
                              src="~/images/avatar/2120b058cb9946e36306778243eadae5.jpg" width="150px;" height="270px;">
-                        } else
+                        }
+                        else
                         {
                             <img class="rounded-circle mt-5"
                              src="~/images/avatar/@CurrentUser.Avatar" width="150px;" height="270px;">
@@ -120,8 +121,9 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <label class="labels">Avatar</label><input type="file"
-                                                                           class="form-control" placeholder="Enter Avatar" value="@CurrentUser.Avatar" name="Avatar">
+                                <label class="labels">Avatar</label>
+                                <input type="hidden" class="form-control" placeholder="Enter Avatar" value="@CurrentUser.Avatar" name="Avatar">
+                                <input type="file" class="form-control" placeholder="Enter Avatar" name="AvatarU">
                             </div>
                             @if (ViewBag.Error != null)
                             {

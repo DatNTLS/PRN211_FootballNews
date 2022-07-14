@@ -273,7 +273,7 @@ namespace FootballNews.Controllers
 
         //User Profile Action
         [HttpPost]
-        public IActionResult UserProfile(string Username, string Avatar)
+        public IActionResult UserProfile(string Username, string Avatar, string AvatarU)
         {
             UserManager userManager = new UserManager();
 
@@ -281,7 +281,15 @@ namespace FootballNews.Controllers
 
             if (userManager.GetUserByName(Username) == null || Username.Equals(CurrentUser.UserName))
             {
-                userManager.UpdateUserProfile(Avatar, Username, CurrentUser.Email);
+                if (AvatarU != null)
+                {
+                    userManager.UpdateUserProfile(AvatarU, Username, CurrentUser.Email);
+
+                }
+                else
+                {
+                    userManager.UpdateUserProfile(Avatar, Username, CurrentUser.Email);
+                }
                 User ChangeUser = userManager.CheckLogin(Username, CurrentUser.Password);
                 HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(ChangeUser));
                 return RedirectToAction("Index", "Home");
