@@ -96,6 +96,14 @@ namespace FootballNews.Logics
             }
         }
 
+        public User GetUserById(int UserId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Users.Where(x => x.UserId == UserId).FirstOrDefault();
+            }
+        }
+
         public void SetRole(int SetRole, int UserId)
         {
             using (var context = new FootballNewsContext())
@@ -169,6 +177,14 @@ namespace FootballNews.Logics
                 CurrentUser.UserName = Username;
                 CurrentUser.Avatar = Avatar;
                 context.SaveChanges();
+            }
+        }
+
+        public List<User> GetAllUsersByName(string Value)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.Users.Where(x=> x.UserName.Equals(Value)).ToList();
             }
         }
     }

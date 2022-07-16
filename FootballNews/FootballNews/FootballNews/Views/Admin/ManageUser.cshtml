@@ -67,7 +67,7 @@
             <form action="searchUser" method="post">
                 <div class="search-wrapper">
                     <span class="class las la-search"></span>
-                    <input type="search" placeholder="Search here" />
+                    <input name="Value" type="search" placeholder="Search here" />
                     <input type="submit" value="Search" />
                 </div>
             </form>
@@ -168,9 +168,9 @@
                                     </form>
                                 </td>
                                 @if (@u.RoleId != 1)
-                                {
+                                { 
                                     <td>
-                                        <a href="/Admin/DeleteUser?UserId=@u.UserId" class="btn btn-danger">Delete</a>
+                                        <a href="#" onclick="alert(@u.UserId, @u.RoleId)" class="btn btn-danger">Delete</a>
                                     </td>
                                 }
                                 else
@@ -310,6 +310,18 @@
             $("#exampleModal").modal('show');
         });
         
+        function alert(UserId, RoleId) {
+            var check;
+            if (RoleId == 2) {
+                check = confirm('If you delete this user, all news written by him will also be deleted . Are you sure to delete ?');
+            } else {
+                check = confirm('Are you sure to delete ?');
+            }
+
+            if (check === true) {
+                window.location.href = '/Admin/DeleteUser?UserId=' + UserId;
+            }
+        }
     </script>
 </body>
 

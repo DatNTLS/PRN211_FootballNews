@@ -19,7 +19,7 @@ namespace FootballNews.Controllers
         public IActionResult ManageUser()
         {
             User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
-            if (CurrentUser.RoleId != 1)
+            if (CurrentUser.RoleId != 1 || HttpContext.Session.GetString("CurrentUser") == null)
             {
                 return Error();
             }
@@ -71,6 +71,10 @@ namespace FootballNews.Controllers
         public IActionResult DeleteUser(int UserId)
         {
             UserManager userManager = new UserManager();
+            NewsManager newsManager = new NewsManager();
+            ImageManager imageManager = new ImageManager();
+            ContentManager contentManager = new ContentManager();
+            CommentManager commentManager = new CommentManager();
 
             User CurrentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("CurrentUser"));
             if (CurrentUser.RoleId != 1)
@@ -79,8 +83,29 @@ namespace FootballNews.Controllers
             }
             else
             {
-                userManager.DeleteUser(UserId);
-                return RedirectToAction("ManageUser", "Admin");
+                User user = userManager.GetUserById(UserId);
+                if (user.RoleId == 2)
+                {
+                    using (var context = new FootballNewsContext())
+                    {
+                        List<News> news = newsManager.GetAllNewsByUserId(UserId);
+                        for (int i = 0; i < news.Count; i++)
+                        {
+                            commentManager.DeleteCommentsById(news[i].NewsId);
+                            contentManager.DeleteContentsById(news[i].NewsId);
+                            imageManager.DeleteImagesById(news[i].NewsId);
+                            newsManager.DeleteNewsById(news[i].NewsId);
+                        }
+
+                    }
+                    userManager.DeleteUser(UserId);
+                    return RedirectToAction("ManageUser", "Admin");
+                }
+                else
+                {
+                    userManager.DeleteUser(UserId);
+                    return RedirectToAction("ManageUser", "Admin");
+                }
             }
 
         }
@@ -250,6 +275,9 @@ namespace FootballNews.Controllers
 
             return RedirectToAction("ManageNews", "Admin");
         }
+
+
+
 
     }
 }

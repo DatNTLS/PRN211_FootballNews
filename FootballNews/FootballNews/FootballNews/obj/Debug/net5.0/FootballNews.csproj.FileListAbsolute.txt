@@ -192,3 +192,4 @@ D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\ref\Foot
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Admin\AddNews.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Error.cshtml.g.cs
 D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Admin\UpdateNews.cshtml.g.cs
+D:\FootballNews\FootballNews\FootballNews\FootballNews\obj\Debug\net5.0\Razor\Views\Journalist\MyNews.cshtml.g.cs

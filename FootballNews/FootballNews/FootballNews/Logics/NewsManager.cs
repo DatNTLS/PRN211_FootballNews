@@ -30,9 +30,35 @@ namespace FootballNews.Logics
                 if (CategoryId != 0)
                 {
                     return context.News.Where(x => x.CategoryId == CategoryId).Skip(Offset - 1).Take(Count).OrderByDescending(x => x.DatePublished).ToList();
-                } else
+                }
+                else
                 {
                     return context.News.Skip(Offset - 1).Take(Count).ToList();
+                }
+            }
+        }
+
+        public int GetNumberOfNewsByAuthorId(int UserId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+
+                return context.News.Where(x => x.AuthorId == UserId).Count();
+
+            }
+        }
+
+        public List<News> GetAllNewsByAuthorId(int UserId, int CategoryId, int Offset, int Count)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                if (CategoryId != 0)
+                {
+                    return context.News.Where(x => x.CategoryId == CategoryId && x.AuthorId == UserId).Skip(Offset - 1).Take(Count).OrderByDescending(x => x.DatePublished).ToList();
+                }
+                else
+                {
+                    return context.News.Where(x => x.AuthorId == UserId).Skip(Offset - 1).Take(Count).ToList();
                 }
             }
         }
@@ -44,7 +70,8 @@ namespace FootballNews.Logics
                 if (CategoryId != 0)
                 {
                     return context.News.Where(x => x.CategoryId == CategoryId).Count();
-                } else
+                }
+                else
                 {
                     return context.News.Count();
                 }
@@ -93,6 +120,15 @@ namespace FootballNews.Logics
                 };
                 context.Add(news);
                 context.SaveChanges();
+            }
+        }
+
+        public List<News> GetAllNewsByUserId(int UserId)
+        {
+            using (var context = new FootballNewsContext())
+            {
+                return context.News.Where(x => x.AuthorId == UserId).ToList();
+
             }
         }
 
